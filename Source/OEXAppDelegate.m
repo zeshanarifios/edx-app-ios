@@ -7,6 +7,7 @@
 //
 
 @import edXCore;
+@import Firebase;
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -59,6 +60,7 @@
             NSAssert(builder != nil, @"Can't find test environment builder");
             (void)[[builder alloc] init];
         });
+        [FIRApp configure];
         return YES;
     }
     if([[NSProcessInfo processInfo].arguments containsObject:@"-END_TO_END_TEST"]) {

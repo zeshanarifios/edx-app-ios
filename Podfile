@@ -18,6 +18,9 @@ pod 'FBSDKCoreKit', '~> 4.6'
 pod 'FBSDKLoginKit', '~> 4.6'
 pod 'Parse', '~> 1.7'
 pod 'Smartling.i18n', '~> 1.0'
+pod 'Firebase', '>= 2.5.1'
+pod ‘Firebase/Core’
+
 end
 
 target 'edXTests' do
