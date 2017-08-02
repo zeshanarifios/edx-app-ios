@@ -233,7 +233,26 @@ open class Manager {
 
         return Manager(configuration: configuration)
     }()
-
+    
+    fileprivate static let supportedlanguage: [String] = {
+        let preferredLanguage = Locale.preferredLanguages[0]
+        var isCurrentOSLanguageSupported = false
+        let localizations = Bundle.main.localizations
+        for lan in localizations {
+            if preferredLanguage == lan {
+                isCurrentOSLanguageSupported = true
+                break
+            }
+        }
+        
+        if isCurrentOSLanguageSupported {
+            return [preferredLanguage]
+        }
+        
+        // english is fallback language
+        return ["en"]
+    }()
+    
     /**
         Creates default values for the "Accept-Encoding", "Accept-Language" and "User-Agent" headers.
 
@@ -246,7 +265,7 @@ open class Manager {
         // Accept-Language HTTP Header; see http://tools.ietf.org/html/rfc7231#section-5.3.5
         let acceptLanguage: String = {
             var components: [String] = []
-            for (index, languageCode) in Locale.preferredLanguages.enumerated() {
+            for (index, languageCode) in supportedlanguage.enumerated() {
                 let q = 1.0 - (Double(index) * 0.1)
                 components.append("\(languageCode);q=\(q)")
                 if q <= 0.5 {
@@ -1140,6 +1159,10 @@ extension Manager {
     */
     public func upload(_ method: Method, _ URLString: URLStringConvertible, stream: InputStream) -> Request {
         return upload(URLRequest(method, URL: URLString), stream: stream)
+    }
+    
+    public func supportedLanguage() -> [String] {
+        return Manager.supportedlanguage
     }
 }
 
