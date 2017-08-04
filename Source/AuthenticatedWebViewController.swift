@@ -46,7 +46,7 @@ protocol AuthenticatedWebViewControllerDelegate {
 }
 
 private class WKWebViewContentController : WebContentController {
-    fileprivate let webView = WKWebView(frame: CGRect.zero)
+    fileprivate let webView = OEXWKWebView(frame: CGRect.zero)
     
     var view : UIView {
         return webView

@@ -234,6 +234,9 @@ open class Manager {
         return Manager(configuration: configuration)
     }()
     
+    // english is fallback language
+    static let fallbackLanguage = "en"
+    
     fileprivate static let supportedlanguage: [String] = {
         let preferredLanguage = Locale.preferredLanguages[0]
         var isCurrentOSLanguageSupported = false
@@ -249,8 +252,7 @@ open class Manager {
             return [preferredLanguage]
         }
         
-        // english is fallback language
-        return ["en"]
+        return [fallbackLanguage]
     }()
     
     /**
@@ -1161,8 +1163,8 @@ extension Manager {
         return upload(URLRequest(method, URL: URLString), stream: stream)
     }
     
-    public func supportedLanguage() -> [String] {
-        return Manager.supportedlanguage
+    public static func supportedLanguage() -> String {
+        return Manager.supportedlanguage.first ?? Manager.fallbackLanguage
     }
 }
 

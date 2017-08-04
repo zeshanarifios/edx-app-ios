@@ -18,7 +18,7 @@ class FindCoursesWebViewHelper: NSObject, WKNavigationDelegate {
     let config : OEXConfig?
     weak var delegate : FindCoursesWebViewHelperDelegate?
     
-    let webView : WKWebView = WKWebView()
+    let webView : WKWebView = OEXWKWebView()
     let searchBar = UISearchBar()
     private var loadController = LoadStateViewController()
     
@@ -181,5 +181,32 @@ extension FindCoursesWebViewHelper: UISearchBarDelegate {
 
         }
         return NSURL(string: newQuery)
+    }
+}
+
+class OEXWKWebView: WKWebView {
+    @discardableResult override func load(_ request: URLRequest) -> WKNavigation? {
+        
+        let mutatedRequest = request as! NSMutableURLRequest
+        let cookieProperties: [HTTPCookiePropertyKey: Any] = [HTTPCookiePropertyKey.name: "prod-edx-language-preference", HTTPCookiePropertyKey.domain: "webview.edx.org", HTTPCookiePropertyKey.value: Manager.supportedLanguage(),HTTPCookiePropertyKey.path: "/"]
+        
+        let cookie = HTTPCookie(properties: cookieProperties)
+        let headers = HTTPCookie.requestHeaderFields(with: [cookie!])
+        mutatedRequest.allHTTPHeaderFields = headers
+        
+        return super.load(mutatedRequest as URLRequest)
+    }
+}
+
+class OEXUIWebview: UIWebView {
+    override func loadRequest(_ request: URLRequest) {
+        let mutatedRequest = request as! NSMutableURLRequest
+        let cookieProperties: [HTTPCookiePropertyKey: Any] = [HTTPCookiePropertyKey.name: "prod-edx-language-preference", HTTPCookiePropertyKey.domain: "webview.edx.org", HTTPCookiePropertyKey.value: Manager.supportedLanguage(),HTTPCookiePropertyKey.path: "/"]
+        
+        let cookie = HTTPCookie(properties: cookieProperties)
+        let headers = HTTPCookie.requestHeaderFields(with: [cookie!])
+        mutatedRequest.allHTTPHeaderFields = headers
+        
+        super.loadRequest(mutatedRequest as URLRequest)
     }
 }
