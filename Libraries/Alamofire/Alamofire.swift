@@ -24,6 +24,7 @@ import Foundation
 
 /// Alamofire errors
 public let AlamofireErrorDomain = "com.alamofire.error"
+public let SpanishLanguageCode = "es-419"
 
 /**
     HTTP method definitions.
@@ -251,6 +252,11 @@ open class Manager {
         if isCurrentOSLanguageSupported {
             return [preferredLanguage]
         }
+        else if Manager.isCurrentOSLanguageSpanish {
+            // iPhone supports different varients of Spanish language like es-419, es-US, es-MX
+            // but edX only supports es-419 so in case of other varients, sending es-419
+            return [SpanishLanguageCode]
+        }
         
         return [fallbackLanguage]
     }()
@@ -301,6 +307,10 @@ open class Manager {
                 "User-Agent": userAgent]
     }()
 
+    open static let isCurrentOSLanguageSpanish: Bool = {
+        return Locale.preferredLanguages[0].contains("es")
+    }()
+    
     fileprivate let queue = DispatchQueue(label: "", attributes: [])
 
     /// The underlying session.

@@ -9,7 +9,6 @@
 import Foundation
 import WebKit
 
-private let SpanishLanguageCode = "es-419"
 private let CookieName = "prod-edx-language-preference"
 
 class OEXWKWebView: WKWebView {
@@ -31,7 +30,7 @@ class OEXUIWebView: UIWebView {
 private extension URLRequest {
     func addCookies() -> URLRequest {
         let mutatedRequest = self as! NSMutableURLRequest
-        let cookieProperties: [HTTPCookiePropertyKey: Any] = [HTTPCookiePropertyKey.domain: OEXConfig.shared().apiHostURL()?.absoluteString ?? "", HTTPCookiePropertyKey.name: CookieName, HTTPCookiePropertyKey.value: Manager.supportedLanguage(),HTTPCookiePropertyKey.path: isCurrentOSLanguageSpanish() ? "/\(SpanishLanguageCode)" : "/"]
+        let cookieProperties: [HTTPCookiePropertyKey: Any] = [HTTPCookiePropertyKey.domain: OEXConfig.shared().apiHostURL()?.absoluteString ?? "", HTTPCookiePropertyKey.name: CookieName, HTTPCookiePropertyKey.value: Manager.supportedLanguage(),HTTPCookiePropertyKey.path: "/"]
         
         let cookie = HTTPCookie(properties: cookieProperties)
         if let cookie = cookie {
@@ -40,10 +39,5 @@ private extension URLRequest {
         }
         
         return mutatedRequest as URLRequest
-    }
-    
-    private func isCurrentOSLanguageSpanish()-> Bool {
-        
-        return Locale.preferredLanguages[0] == SpanishLanguageCode
     }
 }
