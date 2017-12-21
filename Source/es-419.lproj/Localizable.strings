@@ -306,6 +306,10 @@
 "COURSE_WILL_START_AT"="Este curso no ha comenzado todavía. Regrese el {date} para poder ver sus videos.";
 /* Create a new post button title used in discussions' posts screen */
 "CREATE_A_NEW_POST"="Crear nueva publicación";
+/* Courses Segmented Control Text */
+"COURSES"="Courses";
+/* Programs Segmented Control Text */
+"PROGRAMS"="Programs";
 /* Button text to initiate or confirm deletion */
 "DELETE"="Borrar";
 /* Discussion used in the segmented control Creating a new post */

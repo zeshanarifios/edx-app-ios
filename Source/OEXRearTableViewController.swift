@@ -48,7 +48,7 @@ class OEXRearTableViewController : UITableViewController {
         
         coursesLabel.text = Strings.myCourses.oex_uppercaseStringInCurrentLocale()
         accountLabel.text = Strings.userAccount.oex_uppercaseStringInCurrentLocale()
-        courseCatalogLabel.text = courseCatalogTitle().oex_uppercaseStringInCurrentLocale()
+        courseCatalogLabel.text = courseCatalogTitle.oex_uppercaseStringInCurrentLocale()
         setNaturalTextAlignment()
         setAccessibilityLabels()
         
@@ -106,15 +106,9 @@ class OEXRearTableViewController : UITableViewController {
         userProfilePicture.accessibilityLabel = Strings.accessibilityUserAvatar
     }
     
-    private func courseCatalogTitle() -> String {
-        switch environment.config.courseEnrollmentConfig.type {
-        case .Native:
-            return Strings.findCourses
-        default:
-            return Strings.discover
-        }
+    private var courseCatalogTitle : String {
+        return environment.config.courseEnrollmentConfig.type == .native ? Strings.findCourses : Strings.discover
     }
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return OEXStyles.shared().standardStatusBarStyle()
@@ -165,7 +159,7 @@ class OEXRearTableViewController : UITableViewController {
         if (indexPath.row == OEXRearViewOptions.Debug.rawValue && !environment.config.shouldShowDebug()) {
             return 0
         }
-        else if indexPath.row == OEXRearViewOptions.CourseCatalog.rawValue && !environment.config.courseEnrollmentConfig.isCourseDiscoveryEnabled() {
+        else if indexPath.row == OEXRearViewOptions.CourseCatalog.rawValue && !environment.config.courseEnrollmentConfig.isEnabled {
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)

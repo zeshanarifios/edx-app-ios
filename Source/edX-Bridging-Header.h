@@ -33,7 +33,6 @@
 #import "OEXCourse.h"
 #import "OEXCoursewareAccess.h"
 #import "OEXDataParser.h"
-#import "OEXFindCoursesViewController.h"
 #import "OEXFileUtility.h"
 #import "OEXHelperVideoDownload.h"
 #import "OEXHTTPStatusCodes.h"
@@ -60,9 +59,7 @@
 #import "OEXVideoSummary.h"
 #import "OEXVideoPlayerInterface.h"
 #import "UIAppearance+Swift.h"
-#import "OEXCourseInfoViewController.h"
 #import "OEXVideoPathEntry.h"
-
 #import "Reachability.h"
 #import "SWRevealViewController.h"
 #import "OEXLoginSplashViewController.h"

@@ -1,5 +1,5 @@
 //
-//  OEXConfigTests.swift
+//  CourseEnrollmentConfigTests.swift
 //  edX
 //
 //  Created by Akiva Leffert on 1/5/16.
@@ -9,16 +9,16 @@
 import XCTest
 @testable import edX
 
-class EnrollmentConfigTests : XCTestCase {
+class CourseEnrollmentConfigTests : XCTestCase {
     
     func testCourseEnrollmentNoConfig() {
         let config = OEXConfig(dictionary:[:])
-        XCTAssertEqual(config.courseEnrollmentConfig.type, EnrollmentType.None)
+        XCTAssertEqual(config.courseEnrollmentConfig.type, .none)
     }
     
     func testCourseEnrollmentEmptyConfig() {
         let config = OEXConfig(dictionary:["COURSE_ENROLLMENT":[:]])
-        XCTAssertEqual(config.courseEnrollmentConfig.type, EnrollmentType.None)
+        XCTAssertEqual(config.courseEnrollmentConfig.type, .none)
     }
     
     func testCourseEnrollmentWebview() {
@@ -38,7 +38,7 @@ class EnrollmentConfigTests : XCTestCase {
             ]
         ]
         let config = OEXConfig(dictionary: configDictionary)
-        XCTAssertEqual(config.courseEnrollmentConfig.type, EnrollmentType.Webview)
+        XCTAssertEqual(config.courseEnrollmentConfig.type, .webview)
         XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.searchURL!.absoluteString, sampleSearchURL)
         XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.courseInfoURLTemplate!, sampleInfoURLTemplate)
         XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.exploreSubjectsURL!.absoluteString, sampleExploreURL)
