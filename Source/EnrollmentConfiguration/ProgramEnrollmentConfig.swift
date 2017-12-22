@@ -9,15 +9,9 @@
 import Foundation
 import edXCore
 
-
-
-class ProgramEnrollmentWebviewConfig : EnrollmentWebviewConfig {
-    
-}
-
 class ProgramEnrollmentConfig: EnrollmentConfig {
     
-    var webviewConfig: ProgramEnrollmentWebviewConfig
+    var webviewConfig: EnrollmentWebviewConfig
     var discoveryTitle: String{
         return Strings.discover
     }
@@ -26,17 +20,14 @@ class ProgramEnrollmentConfig: EnrollmentConfig {
     }
     
     override init(dictionary: [String: AnyObject]) {
-        webviewConfig = ProgramEnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
+        webviewConfig = EnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
         super.init(dictionary: dictionary)
     }
     
 }
 
-private let key = "PROGRAM_ENROLLMENT"
 extension OEXConfig {
-    
     var programEnrollmentConfig : ProgramEnrollmentConfig {
-        return ProgramEnrollmentConfig(dictionary: self[key] as? [String:AnyObject] ?? [:])
+        return ProgramEnrollmentConfig(dictionary: self[EnrollmentKeys.program] as? [String:AnyObject] ?? [:])
     }
-    
 }

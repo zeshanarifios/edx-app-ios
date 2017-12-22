@@ -11,8 +11,8 @@ import WebKit
 
 class DiscoverCoursesWebViewHelper: DiscoverWebViewHelper {
     
-    override init(config : OEXConfig?, delegate : DiscoverWebViewHelperDelegate?, bottomBar: UIView?) {
-        super.init(config: config, delegate: delegate, bottomBar: bottomBar)
+    override init(config : OEXConfig?, delegate : DiscoverWebViewHelperDelegate?, dataSource: DiscoverWebViewHelperDataSource?, bottomBar: UIView?) {
+        super.init(config: config, delegate: delegate, dataSource: dataSource, bottomBar: bottomBar)
         webView.accessibilityIdentifier = "find-courses-webview"
     }
     

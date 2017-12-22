@@ -27,10 +27,12 @@ class CourseEnrollmentWebviewConfig : EnrollmentWebviewConfig {
 }
 
 class CourseEnrollmentConfig: EnrollmentConfig {
+    
     var webviewConfig: CourseEnrollmentWebviewConfig
     var discoveryTitle: String{
-        return isNative ? Strings.findCourses : Strings.discover
+        return type == .native ? Strings.findCourses : Strings.discover
     }
+    
     override init(dictionary: [String: AnyObject]) {
         webviewConfig = CourseEnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
         super.init(dictionary: dictionary)
@@ -38,9 +40,9 @@ class CourseEnrollmentConfig: EnrollmentConfig {
     
 }
 
-private let key = "COURSE_ENROLLMENT"
+
 extension OEXConfig {
     var courseEnrollmentConfig : CourseEnrollmentConfig {
-        return CourseEnrollmentConfig(dictionary: self[key] as? [String:AnyObject] ?? [:])
+        return CourseEnrollmentConfig(dictionary: self[EnrollmentKeys.course] as? [String:AnyObject] ?? [:])
     }
 }

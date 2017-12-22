@@ -17,7 +17,7 @@ class DiscoverCoursesTests: XCTestCase {
                 XCTAssert(true, "Invalid URL Provided")
                 return
         }
-        let helper = DiscoverCoursesWebViewHelper(config:nil, delegate: nil, bottomBar: nil)
+        let helper = DiscoverCoursesWebViewHelper(config:nil, delegate: nil, dataSource: nil, bottomBar: nil)
         let coursesWebViewController = CoursesWebViewController(with: nil)
         let testCorrectURLRequest = URLRequest(url: correctURL)
         let testShouldLoadLinkWithCorrectRequest = !coursesWebViewController.webViewHelper(helper: helper, shouldLoadLinkWithRequest: testCorrectURLRequest)

@@ -25,14 +25,14 @@ class ProgramDetailsViewController: DiscoverWebViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, bottomBar: bottomBar)
+        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         if let programDetailsURL = programDetailsURL {
             webViewHelper?.loadRequest(withURL: programDetailsURL)
         }
         navigationItem.title = programEnrollmentConfig.discoveryTitle
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate Methods -
+    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
         
         return true    

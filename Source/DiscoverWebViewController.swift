@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate {
+class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate, DiscoverWebViewHelperDataSource {
 
     var bottomBar: UIView?
     var webViewHelper: DiscoverWebViewHelper?
@@ -34,7 +34,7 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         }
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate Implementation -
+    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     var webViewNativeSearchEnabled: Bool {
         return false
     }

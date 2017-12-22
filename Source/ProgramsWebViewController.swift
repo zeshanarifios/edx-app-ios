@@ -18,7 +18,7 @@ class ProgramsWebViewController: DiscoverWebViewController {
         super.viewDidLoad()
         navigationItem.title = programEnrollmentConfig.discoveryTitle
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, bottomBar: bottomBar)
+        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
         webViewHelper?.searchBaseURL = programEnrollmentConfig.webviewConfig.searchURL
         if let urlToLoad = programEnrollmentConfig.webviewConfig.searchURL
@@ -30,8 +30,8 @@ class ProgramsWebViewController: DiscoverWebViewController {
     func getProgramDetailsURL(from url: URL) -> URL? {
         //edxapp://course_info?path_id=https://www.edx.org/professional-certificate/ritx-soft-skills
         
-        if url.scheme ?? "" == CoursesWebViewController.findCoursesLinkURLScheme {
-            if let path = url.queryParameters?[CoursesWebViewController.findCoursesPathIDKey] as? String {
+        if url.scheme ?? "" == DiscoverCatalog.linkURLScheme {
+            if let path = url.queryParameters?[DiscoverCatalog.pathIdKey] as? String {
                 return URL(string: path)
             }
         }
@@ -44,7 +44,7 @@ class ProgramsWebViewController: DiscoverWebViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate Methods -
+    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override var webViewNativeSearchEnabled: Bool {
         return programEnrollmentConfig.webviewConfig.nativeSearchbarEnabled
     }

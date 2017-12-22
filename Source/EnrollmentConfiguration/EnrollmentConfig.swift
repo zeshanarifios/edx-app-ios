@@ -16,6 +16,8 @@ enum EnrollmentType : String {
 }
 
 enum EnrollmentKeys: String, RawStringExtractable {
+    case program = "PROGRAM_ENROLLMENT"
+    case course = "COURSE_ENROLLMENT"
     case nativeSearchBarEnabled = "SEARCH_BAR_ENABLED"
     case searchURL = "SEARCH_URL"
     case enrollmentType = "TYPE"
@@ -32,19 +34,18 @@ class EnrollmentWebviewConfig: NSObject {
         searchURL = (dictionary[EnrollmentKeys.searchURL] as? String).flatMap { URL(string:$0)}
         super.init()
     }
+    
 }
 
 class EnrollmentConfig : NSObject {
+    
     let type: EnrollmentType
     var isEnabled : Bool{
         return type != .none
-    }
-    // Associated swift enums can not be used in objective-c, that's why this extra function needed
-    var isNative: Bool {
-        return type == .native
     }
     
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[EnrollmentKeys.enrollmentType] as? String).flatMap { EnrollmentType(rawValue: $0) } ?? .none
     }
+    
 }

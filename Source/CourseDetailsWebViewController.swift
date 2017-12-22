@@ -10,18 +10,13 @@ import UIKit
 
 class CourseDetailsWebViewController: DiscoverWebViewController {
     
-    let courseInfoLinkPathIDPlaceholder = "{path_id}"
-    static var findCoursesEnrollPath = "enroll/"
-    static var courseEnrollURLCourseIDKey = "course_id"
-    static var courseEnrollURLEmailOptInKey = "email_opt_in"
-    
     var pathId: String
     var courseEnrollmentConfig: CourseEnrollmentConfig {
         return OEXConfig.shared().courseEnrollmentConfig
     }
     
     var courseDetailsURL:URL? {
-        guard let urlString = courseEnrollmentConfig.webviewConfig.courseInfoURLTemplate?.replacingOccurrences(of: courseInfoLinkPathIDPlaceholder, with: self.pathId) else {
+        guard let urlString = courseEnrollmentConfig.webviewConfig.courseInfoURLTemplate?.replacingOccurrences(of: DiscoverCatalog.pathIdPlaceHolder, with: self.pathId) else {
             return nil
         }
         return URL(string: urlString)
@@ -39,7 +34,7 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, bottomBar: bottomBar)
+        webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         if let courseDetailsUrl = courseDetailsURL {
             webViewHelper?.loadRequest(withURL: courseDetailsUrl)
         }
@@ -50,11 +45,11 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
         OEXAnalytics.shared().trackScreen(withName: OEXAnalyticsScreenCourseInfo)
     }
     func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard let scheme = url.scheme, (scheme == CoursesWebViewController.findCoursesLinkURLScheme && url.hostlessPath == CourseDetailsWebViewController.findCoursesEnrollPath) else {
+        guard let scheme = url.scheme, (scheme == DiscoverCatalog.linkURLScheme && url.hostlessPath == DiscoverCatalog.Course.enrollPath) else {
             return nil
         }
-        let courseId = url.queryParameters?[CourseDetailsWebViewController.courseEnrollURLCourseIDKey] as? String
-        let emailOptIn = url.queryParameters?[CourseDetailsWebViewController.courseEnrollURLEmailOptInKey] as? Bool
+        let courseId = url.queryParameters?[DiscoverCatalog.Course.courseIdKey] as? String
+        let emailOptIn = url.queryParameters?[DiscoverCatalog.emailOptInKey] as? Bool
         return (courseId , emailOptIn ?? false)
     }
     
@@ -99,7 +94,7 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
         }
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate Methods -
+    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
         guard let url = request.url,
             let urlData = parse(url: url),

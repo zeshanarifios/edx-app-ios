@@ -248,11 +248,17 @@ extension OEXRouter {
     
     func showCourseCatalog(fromController: UIViewController? = nil, bottomBar: UIView? = nil) {
         let controller: UIViewController
-        if environment.config.programEnrollmentConfig.isEnabled {
+        if environment.config.programEnrollmentConfig.isEnabled && environment.config.courseEnrollmentConfig.isEnabled {
             controller = DiscoveryCatalogViewController(with: environment, andBottomBar: bottomBar?.copy() as? UIView)
         }
+        else if environment.config.programEnrollmentConfig.isEnabled {
+            controller = ProgramsWebViewController(with: bottomBar?.copy() as? UIView)
+        }
+        else if environment.config.courseEnrollmentConfig.isEnabled {
+            controller = environment.config.courseEnrollmentConfig.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
+        }
         else {
-            controller = environment.config.courseEnrollmentConfig.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: self.environment)
+            return
         }
         if revealController != nil {
             if let fromController = fromController {
@@ -271,7 +277,7 @@ extension OEXRouter {
 
     func showExploreCourses(bottomBar: UIView?) {
         let controller = CoursesWebViewController(with: bottomBar)
-        controller.startURL = .exploreSubjects
+        controller.coursesWebViewType = .exploreSubjects
         if revealController != nil {
             showContentStack(withRootController: controller, animated: true)
         } else {
