@@ -18,9 +18,9 @@ import WebKit
     func webViewHelper(helper : DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool
 }
 
-class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
+class DiscoverWebViewHelper: NSObject  {
     
-    private lazy var loadController: LoadStateViewController = {
+    fileprivate lazy var loadController: LoadStateViewController = {
         return LoadStateViewController()
     }()
     lazy var webView : WKWebView = {
@@ -33,10 +33,11 @@ class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
     let config : OEXConfig?
     weak var delegate : DiscoverWebViewHelperDelegate?
     weak var dataSource : DiscoverWebViewHelperDataSource?
-    private var request : URLRequest?
+    fileprivate var request : URLRequest?
     var searchBaseURL: URL?
     
     init(config : OEXConfig?, delegate : DiscoverWebViewHelperDelegate?, dataSource : DiscoverWebViewHelperDataSource?, bottomBar: UIView?) {
+        
         self.config = config
         self.delegate = delegate
         self.dataSource = dataSource
@@ -53,7 +54,7 @@ class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
             if dataSource?.webViewNativeSearchEnabled ?? false {
                 searchBar.delegate = self
                 container.view.addSubview(searchBar)
-                searchBar.snp_makeConstraints{ make in
+                searchBar.snp_makeConstraints { make in
                     make.leading.equalTo(container.view)
                     make.trailing.equalTo(container.view)
                     make.top.equalTo(container.view)
@@ -73,19 +74,47 @@ class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
             
             if let bar = bottomBar {
                 container.view.addSubview(bar)
-                bar.snp_makeConstraints(closure: { (make) in
+                bar.snp_makeConstraints { make in
                     make.leading.equalTo(container.view)
                     make.trailing.equalTo(container.view)
                     make.bottom.equalTo(container.view)
-                })
+                }
             }
         }
+        
     }
     
     func loadRequest(withURL url : URL) {
         request = URLRequest(url: url) // never gives nil
         self.webView.load(request!) // Force Unwrapping will not cause any crash
     }
+    
+    func showError(error : NSError) {
+        let buttonInfo = MessageButtonInfo(title: Strings.reload) {[weak self] _ in
+            if let request = self?.request {
+                self?.webView.load(request as URLRequest)
+                self?.loadController.state = .Initial
+            }
+        }
+        loadController.state = LoadState.failed(error: error, buttonInfo: buttonInfo)
+    }
+    
+    @objc static func buildQuery(baseURL: String, toolbarString: String) -> URL? {
+        let items = toolbarString.components(separatedBy: " ")
+        let escapedItems = items.flatMap { $0.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)  }
+        let searchTerm = "search_query=" + escapedItems.joined(separator: "+")
+        let newQuery: String
+        if baseURL.contains("?") {
+            newQuery = baseURL + "&" + searchTerm
+        } else {
+            newQuery = baseURL + "?" + searchTerm
+        }
+        return URL(string: newQuery)
+    }
+    
+}
+// MARK: - WKNavigationDelegate -
+extension DiscoverWebViewHelper: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let request = navigationAction.request
@@ -108,16 +137,6 @@ class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
         }
     }
     
-    func showError(error : NSError) {
-        let buttonInfo = MessageButtonInfo(title: Strings.reload) {[weak self] _ in
-            if let request = self?.request {
-                self?.webView.load(request as URLRequest)
-                self?.loadController.state = .Initial
-            }
-        }
-        loadController.state = LoadState.failed(error: error, buttonInfo: buttonInfo)
-    }
-    
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         showError(error: error as NSError)
     }
@@ -135,6 +154,7 @@ class DiscoverWebViewHelper: NSObject, WKNavigationDelegate {
         }
     }
 }
+// MARK: - UISearchBarDelegate -
 extension DiscoverWebViewHelper: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -144,17 +164,5 @@ extension DiscoverWebViewHelper: UISearchBarDelegate {
             loadRequest(withURL: URL)
         }
     }
-    
-    @objc static func buildQuery(baseURL: String, toolbarString: String) -> URL? {
-        let items = toolbarString.components(separatedBy: " ")
-        let escapedItems = items.flatMap { $0.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)  }
-        let searchTerm = "search_query=" + escapedItems.joined(separator: "+")
-        let newQuery: String
-        if baseURL.contains("?") {
-            newQuery = baseURL + "&" + searchTerm
-        } else {
-            newQuery = baseURL + "?" + searchTerm
-        }
-        return URL(string: newQuery)
-    }
+
 }

@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-struct DiscoverCatalog {
+enum DiscoverCatalog {
     
     static let linkURLScheme = "edxapp"
     static let pathIdPlaceHolder = "{path_id}"
     static let emailOptInKey = "email_opt_in"
     static let pathIdKey = "path_id";
     
-    struct Course {
+    enum Course {
         static let enrollPath = "enroll/"
         static let courseIdKey = "course_id"
         static let detailsPath = "course_info/";

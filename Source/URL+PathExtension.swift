@@ -9,19 +9,19 @@
 import Foundation
 
 extension URL {
+    
     var hostlessPath: String {
         guard let host = host else {
             return path
         }
         return "\(host)/\(path)"
-        
     }
     
-    var queryParameters: Dictionary<String, Any>? {
+    var queryParameters: [String: Any]? {
         guard let queryString = query else {
             return nil
         }
-        var queryParameters = [String:String]()
+        var queryParameters = [String: Any]()
         let parameters = queryString.components(separatedBy: "&")
         for parameter in parameters {
             let keyValuePair = parameter.components(separatedBy: "=")
@@ -34,4 +34,5 @@ extension URL {
         }
         return queryParameters
     }
+    
 }
