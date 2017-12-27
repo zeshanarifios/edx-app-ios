@@ -34,6 +34,65 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         }
     }
     
+    // MARK: - Local Methods -
+    func showCourseDetails(with pathId: String) {
+        let courseDetailsWebViewController = CourseDetailsWebViewController(with: pathId, and: bottomBar?.copy() as? UIView)
+        navigationController?.pushViewController(courseDetailsWebViewController, animated: true)
+    }
+    
+    func getCourseDetailPath(from url: URL) -> String? {
+        return url.isValidAppURLScheme && url.hostlessPath == DiscoverCatalog.Course.detailPath ? url.queryParameters?[DiscoverCatalog.pathKey] as? String : nil
+    }
+    func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
+        guard url.isValidAppURLScheme, url.hostlessPath == DiscoverCatalog.Course.enrollPath else {
+            return nil
+        }
+        let courseId = url.queryParameters?[DiscoverCatalog.Course.courseIdKey] as? String
+        let emailOptIn = url.queryParameters?[DiscoverCatalog.emailOptInKey] as? Bool
+        return (courseId , emailOptIn ?? false)
+    }
+    
+    func showMainScreen(with message: String, and courseId: String) {
+        OEXRouter.shared().showMyCourses(animated: true, pushingCourseWithID: courseId)
+        perform(#selector(postEnrollmentSuccessNotification), with: message, afterDelay: 0.5)
+    }
+    
+    func postEnrollmentSuccessNotification(message: String) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: EnrollmentShared.successNotification), object: message)
+        if isModal() {
+            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func enrollInCourse(courseID: String, emailOpt: Bool) {
+        
+        let environment = OEXRouter.shared().environment;
+        environment.analytics.trackCourseEnrollment(courseId: courseID, name: AnalyticsEventName.CourseEnrollmentClicked.rawValue, displayName: AnalyticsDisplayName.EnrolledCourseClicked.rawValue)
+        
+        guard let _ = OEXSession.shared()?.currentUser else {
+            OEXRouter.shared().showSignUpScreen(from: self, completion: {
+                self.enrollInCourse(courseID: courseID, emailOpt: emailOpt)
+            })
+            return;
+        }
+        
+        if let _ = environment.dataManager.enrollmentManager.enrolledCourseWithID(courseID: courseID) {
+            showMainScreen(with: Strings.findCoursesAlreadyEnrolledMessage, and: courseID)
+            return
+        }
+        
+        let request = CourseCatalogAPI.enroll(courseID: courseID)
+        environment.networkManager.taskForRequest(request) {[weak self] response in
+            if response.response?.httpStatusCode.is2xx ?? false {
+                environment.analytics.trackCourseEnrollment(courseId: courseID, name: AnalyticsEventName.CourseEnrollmentSuccess.rawValue, displayName: AnalyticsDisplayName.EnrolledCourseSuccess.rawValue)
+                self?.showMainScreen(with: Strings.findCoursesEnrollmentSuccessfulMessage, and: courseID)
+            }
+            else {
+                self?.showOverlay(withMessage: Strings.findCoursesEnrollmentErrorDescription)
+            }
+        }
+    }
+    
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     var webViewNativeSearchEnabled: Bool {
         return false

@@ -13,12 +13,12 @@ class CourseEnrollmentConfigTests : XCTestCase {
     
     func testCourseEnrollmentNoConfig() {
         let config = OEXConfig(dictionary:[:])
-        XCTAssertEqual(config.courseEnrollmentConfig.type, .none)
+        XCTAssertEqual(config.courseEnrollment.type, .none)
     }
     
     func testCourseEnrollmentEmptyConfig() {
         let config = OEXConfig(dictionary:["COURSE_ENROLLMENT":[:]])
-        XCTAssertEqual(config.courseEnrollmentConfig.type, .none)
+        XCTAssertEqual(config.courseEnrollment.type, .none)
     }
     
     func testCourseEnrollmentWebview() {
@@ -30,19 +30,19 @@ class CourseEnrollmentConfigTests : XCTestCase {
             "COURSE_ENROLLMENT": [
                 "TYPE": "webview",
                 "WEBVIEW" : [
-                    "COURSE_SEARCH_URL" : sampleSearchURL,
+                    "SEARCH_URL" : sampleSearchURL,
                     "EXPLORE_SUBJECTS_URL": sampleExploreURL,
-                    "COURSE_INFO_URL_TEMPLATE" : sampleInfoURLTemplate,
+                    "DETAIL_TEMPLATE" : sampleInfoURLTemplate,
                     "SEARCH_BAR_ENABLED" : true
                 ]
             ]
         ]
         let config = OEXConfig(dictionary: configDictionary)
-        XCTAssertEqual(config.courseEnrollmentConfig.type, .webview)
-        XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.searchURL!.absoluteString, sampleSearchURL)
-        XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.courseInfoURLTemplate!, sampleInfoURLTemplate)
-        XCTAssertEqual(config.courseEnrollmentConfig.webviewConfig.exploreSubjectsURL!.absoluteString, sampleExploreURL)
-        XCTAssertTrue(config.courseEnrollmentConfig.webviewConfig.nativeSearchbarEnabled)
+        XCTAssertEqual(config.courseEnrollment.type, .webview)
+        XCTAssertEqual(config.courseEnrollment.webview.searchURL!.absoluteString, sampleSearchURL)
+        XCTAssertEqual(config.courseEnrollment.webview.detailTemplate!, sampleInfoURLTemplate)
+        XCTAssertEqual(config.courseEnrollment.webview.exploreSubjectsURL!.absoluteString, sampleExploreURL)
+        XCTAssertTrue(config.courseEnrollment.webview.searchbarEnabled)
     }
 
 }

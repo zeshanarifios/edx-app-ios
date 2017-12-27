@@ -12,7 +12,7 @@ class ProgramDetailsViewController: DiscoverWebViewController {
     
     var programDetailsURL:URL?
     var programEnrollmentConfig: ProgramEnrollmentConfig {
-        return OEXConfig.shared().programEnrollmentConfig
+        return OEXConfig.shared().programEnrollment
     }
     init(with programDetailsURL: URL, andBottomBar bar: UIView?) {
         self.programDetailsURL = programDetailsURL
@@ -34,7 +34,25 @@ class ProgramDetailsViewController: DiscoverWebViewController {
     
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
+        guard let url = request.url,
+              url.isValidAppURLScheme else {
+            return true
+        }
+        switch url.hostlessPath {
+        case DiscoverCatalog.Course.enrollPath:
+            if let urlData = parse(url: url), let courseId = urlData.courseId {
+                enrollInCourse(courseID: courseId, emailOpt: urlData.emailOptIn)
+            }
+            break
+        case DiscoverCatalog.Course.detailPath:
+            if let courseDetailPath = getCourseDetailPath(from: url) {
+                showCourseDetails(with: courseDetailPath)
+            }
+            break
+        default:
+            break
+        }
         
-        return true    
+        return false
     }
 }

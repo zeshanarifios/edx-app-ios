@@ -11,16 +11,19 @@ import UIKit
 
 enum DiscoverCatalog {
     
-    static let linkURLScheme = "edxapp"
-    static let pathIdPlaceHolder = "{path_id}"
+    static let appURLScheme = "edxapp"
+    static let pathPlaceHolder = "{path_id}"
     static let emailOptInKey = "email_opt_in"
-    static let pathIdKey = "path_id";
+    static let pathKey = "path_id";
     
     enum Course {
         static let enrollPath = "enroll/"
         static let courseIdKey = "course_id"
-        static let detailsPath = "course_info/";
-        static var pathPrefix = "course/";
+        static let detailPath = "course_info/"
+    }
+    
+    enum Program {
+        static let detailPath = "program_info/"
     }
     
 }

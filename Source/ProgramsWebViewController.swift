@@ -11,7 +11,7 @@ import Foundation
 class ProgramsWebViewController: DiscoverWebViewController {
     
     var programEnrollmentConfig: ProgramEnrollmentConfig {
-        return OEXConfig.shared().programEnrollmentConfig
+        return OEXConfig.shared().programEnrollment
     }
     
     override func viewDidLoad() {
@@ -20,23 +20,21 @@ class ProgramsWebViewController: DiscoverWebViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
-        webViewHelper?.searchBaseURL = programEnrollmentConfig.webviewConfig.searchURL
-        if let urlToLoad = programEnrollmentConfig.webviewConfig.searchURL
+        webViewHelper?.searchBaseURL = programEnrollmentConfig.webview.searchURL
+        if let urlToLoad = programEnrollmentConfig.webview.searchURL
         {
             webViewHelper?.loadRequest(withURL: urlToLoad)
         }
     }
     
     func getProgramDetailsURL(from url: URL) -> URL? {
-        //edxapp://course_info?path_id=https://www.edx.org/professional-certificate/ritx-soft-skills
-        
-        if url.scheme ?? "" == DiscoverCatalog.linkURLScheme {
-            if let path = url.queryParameters?[DiscoverCatalog.pathIdKey] as? String {
-                return URL(string: path)
-            }
+        guard url.isValidAppURLScheme,
+            let path = url.queryParameters?[DiscoverCatalog.pathKey] as? String,
+            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: path)
+        else {
+            return nil
         }
-        return nil
-        
+        return URL(string: programDetailUrlString)
     }
     
     private func showProgramDetails(with url: URL) {
@@ -46,11 +44,13 @@ class ProgramsWebViewController: DiscoverWebViewController {
     
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override var webViewNativeSearchEnabled: Bool {
-        return programEnrollmentConfig.webviewConfig.nativeSearchbarEnabled
+        return programEnrollmentConfig.webview.searchbarEnabled
     }
     
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
         guard let url = request.url,
+            url.isValidAppURLScheme,
+            url.hostlessPath == DiscoverCatalog.Program.detailPath,
             let programDetailsURL = getProgramDetailsURL(from: url) else {
             return true
         }

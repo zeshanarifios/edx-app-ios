@@ -107,7 +107,7 @@ class OEXRearTableViewController : UITableViewController {
     }
     
     private var courseCatalogTitle : String {
-        return environment.config.courseEnrollmentConfig.type == .native ? Strings.findCourses : Strings.discover
+        return environment.config.courseEnrollment.type == .native ? Strings.findCourses : Strings.discover
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -159,7 +159,7 @@ class OEXRearTableViewController : UITableViewController {
         if (indexPath.row == OEXRearViewOptions.Debug.rawValue && !environment.config.shouldShowDebug()) {
             return 0
         }
-        else if indexPath.row == OEXRearViewOptions.CourseCatalog.rawValue && !environment.config.courseEnrollmentConfig.isEnabled {
+        else if indexPath.row == OEXRearViewOptions.CourseCatalog.rawValue && !environment.config.courseEnrollment.isEnabled {
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)

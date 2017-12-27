@@ -17,6 +17,10 @@ extension URL {
         return "\(host)/\(path)"
     }
     
+    var isValidAppURLScheme: Bool {
+        return self.scheme ?? "" == DiscoverCatalog.appURLScheme ? true : false
+    }
+    
     var queryParameters: [String: Any]? {
         guard let queryString = query else {
             return nil

@@ -248,14 +248,14 @@ extension OEXRouter {
     
     func showCourseCatalog(fromController: UIViewController? = nil, bottomBar: UIView? = nil) {
         let controller: UIViewController
-        if environment.config.programEnrollmentConfig.isEnabled && environment.config.courseEnrollmentConfig.isEnabled {
+        if environment.config.programEnrollment.isEnabled && environment.config.courseEnrollment.isEnabled {
             controller = DiscoveryCatalogViewController(with: environment, andBottomBar: bottomBar?.copy() as? UIView)
         }
-        else if environment.config.programEnrollmentConfig.isEnabled {
+        else if environment.config.programEnrollment.isEnabled {
             controller = ProgramsWebViewController(with: bottomBar?.copy() as? UIView)
         }
-        else if environment.config.courseEnrollmentConfig.isEnabled {
-            controller = environment.config.courseEnrollmentConfig.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
+        else if environment.config.courseEnrollment.isEnabled {
+            controller = environment.config.courseEnrollment.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
         }
         else {
             return

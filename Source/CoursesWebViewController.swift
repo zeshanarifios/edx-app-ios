@@ -17,7 +17,7 @@ class CoursesWebViewController: DiscoverWebViewController{
     
     var coursesWebViewType: CoursesWebViewType?
     var courseEnrollmentConfig: CourseEnrollmentConfig {
-        return OEXConfig.shared().courseEnrollmentConfig
+        return OEXConfig.shared().courseEnrollment
     }
     
     override func viewDidLoad() {
@@ -26,9 +26,9 @@ class CoursesWebViewController: DiscoverWebViewController{
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
-        webViewHelper?.searchBaseURL = courseEnrollmentConfig.webviewConfig.searchURL
+        webViewHelper?.searchBaseURL = courseEnrollmentConfig.webview.searchURL
         if let urlToLoad =
-            coursesWebViewType ?? .discoverCourses == .discoverCourses ? courseEnrollmentConfig.webviewConfig.searchURL : courseEnrollmentConfig.webviewConfig.exploreSubjectsURL {
+            coursesWebViewType ?? .discoverCourses == .discoverCourses ? courseEnrollmentConfig.webview.searchURL : courseEnrollmentConfig.webview.exploreSubjectsURL {
             webViewHelper?.loadRequest(withURL: urlToLoad)
         }
     }
@@ -42,32 +42,16 @@ class CoursesWebViewController: DiscoverWebViewController{
         return OEXStyles.shared().standardStatusBarStyle();
     }
     
-    // MARK: - Local Methods -
-    private func showCourseDetails(with pathId: String) {
-        let courseDetailsWebViewController = CourseDetailsWebViewController(with: pathId, and: bottomBar?.copy() as? UIView)
-        navigationController?.pushViewController(courseDetailsWebViewController, animated: true)
-    }
-    
-    func getCoursePathId(from url: URL) -> String? {
-        if url.scheme ?? "" == DiscoverCatalog.linkURLScheme && url.hostlessPath == DiscoverCatalog.Course.detailsPath {
-            let path = url.queryParameters?[DiscoverCatalog.pathIdKey] as? String
-            // the site sends us things of the form "course/<path_id>" we only want the path id
-            return path?.replacingOccurrences(of: DiscoverCatalog.Course.pathPrefix, with: "")
-        }
-        return nil
-    }
-    
-    
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override var webViewNativeSearchEnabled: Bool {
-        return courseEnrollmentConfig.webviewConfig.nativeSearchbarEnabled 
+        return courseEnrollmentConfig.webview.searchbarEnabled
     }
     
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        guard let url = request.url, let coursePathId = getCoursePathId(from: url) else {
+        guard let url = request.url, let courseDetailPath = getCourseDetailPath(from: url) else {
             return true
         }
-        showCourseDetails(with: coursePathId)
+        showCourseDetails(with: courseDetailPath)
         return false
     }
 }

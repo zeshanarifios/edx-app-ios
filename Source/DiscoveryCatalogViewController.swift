@@ -41,7 +41,7 @@ class DiscoveryCatalogViewController: UIViewController {
     }()
     
     lazy var coursesController: UIViewController = {
-        return self.environment.config.courseEnrollmentConfig.type == .webview ? CoursesWebViewController(with: self.bottomBar) : CourseCatalogViewController(environment: self.environment)
+        return self.environment.config.courseEnrollment.type == .webview ? CoursesWebViewController(with: self.bottomBar) : CourseCatalogViewController(environment: self.environment)
     }()
     
     lazy var programsController: UIViewController = {

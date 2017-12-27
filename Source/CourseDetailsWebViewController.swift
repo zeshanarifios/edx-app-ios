@@ -12,11 +12,11 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
     
     var pathId: String
     var courseEnrollmentConfig: CourseEnrollmentConfig {
-        return OEXConfig.shared().courseEnrollmentConfig
+        return OEXConfig.shared().courseEnrollment
     }
     
-    var courseDetailsURL:URL? {
-        guard let urlString = courseEnrollmentConfig.webviewConfig.courseInfoURLTemplate?.replacingOccurrences(of: DiscoverCatalog.pathIdPlaceHolder, with: self.pathId) else {
+    var courseDetailURL:URL? {
+        guard let urlString = courseEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: self.pathId) else {
             return nil
         }
         return URL(string: urlString)
@@ -35,8 +35,8 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
-        if let courseDetailsUrl = courseDetailsURL {
-            webViewHelper?.loadRequest(withURL: courseDetailsUrl)
+        if let courseDetailUrl = courseDetailURL {
+            webViewHelper?.loadRequest(withURL: courseDetailUrl)
         }
         navigationItem.title = courseEnrollmentConfig.discoveryTitle
     }
@@ -44,55 +44,7 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
         super.viewWillAppear(animated)
         OEXAnalytics.shared().trackScreen(withName: OEXAnalyticsScreenCourseInfo)
     }
-    func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard let scheme = url.scheme, (scheme == DiscoverCatalog.linkURLScheme && url.hostlessPath == DiscoverCatalog.Course.enrollPath) else {
-            return nil
-        }
-        let courseId = url.queryParameters?[DiscoverCatalog.Course.courseIdKey] as? String
-        let emailOptIn = url.queryParameters?[DiscoverCatalog.emailOptInKey] as? Bool
-        return (courseId , emailOptIn ?? false)
-    }
     
-    func showMainScreen(with message: String, and courseId: String) {
-        OEXRouter.shared().showMyCourses(animated: true, pushingCourseWithID: courseId)
-        perform(#selector(postEnrollmentSuccessNotification), with: message, afterDelay: 0.5)
-    }
-    
-    func postEnrollmentSuccessNotification(message: String) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: EnrollmentShared.successNotification), object: message)
-        if isModal() {
-            view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    func enrollInCourse(courseID: String, emailOpt: Bool) {
-        
-        let environment = OEXRouter.shared().environment;
-        environment.analytics.trackCourseEnrollment(courseId: courseID, name: AnalyticsEventName.CourseEnrollmentClicked.rawValue, displayName: AnalyticsDisplayName.EnrolledCourseClicked.rawValue)
-        
-        guard let _ = OEXSession.shared()?.currentUser else {
-            OEXRouter.shared().showSignUpScreen(from: self, completion: {
-                self.enrollInCourse(courseID: courseID, emailOpt: emailOpt)
-            })
-            return;
-        }
-        
-        if let _ = environment.dataManager.enrollmentManager.enrolledCourseWithID(courseID: courseID) {
-            showMainScreen(with: Strings.findCoursesAlreadyEnrolledMessage, and: courseID)
-            return
-        }
-        
-        let request = CourseCatalogAPI.enroll(courseID: courseID)
-        environment.networkManager.taskForRequest(request) {[weak self] response in
-            if response.response?.httpStatusCode.is2xx ?? false {
-                environment.analytics.trackCourseEnrollment(courseId: courseID, name: AnalyticsEventName.CourseEnrollmentSuccess.rawValue, displayName: AnalyticsDisplayName.EnrolledCourseSuccess.rawValue)
-                self?.showMainScreen(with: Strings.findCoursesEnrollmentSuccessfulMessage, and: courseID)
-            }
-            else {
-                self?.showOverlay(withMessage: Strings.findCoursesEnrollmentErrorDescription)
-            }
-        }
-    }
     
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {

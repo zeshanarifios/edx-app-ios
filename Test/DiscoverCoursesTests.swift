@@ -33,7 +33,7 @@ class DiscoverCoursesTests: XCTestCase {
             return
         }
         let coursesWebViewController = CoursesWebViewController(with: nil)
-        let pathId = coursesWebViewController.getCoursePathId(from: testURL)
+        let pathId = coursesWebViewController.getCourseDetailPath(from: testURL)
         XCTAssertEqual(pathId, "science-happiness-uc-berkeleyx-gg101x", "Path Id incorrectly parsed");
     }
     
@@ -57,7 +57,7 @@ class DiscoverCoursesTests: XCTestCase {
     // TODO: Needs to Discuss crash.
     func disable_testCourseInfoURLTemplateSubstitution() {
         let courseDetailsWebViewController = CourseDetailsWebViewController(with:"science-happiness-uc-berkeleyx-gg101x", and:nil)
-        let courseURLString = courseDetailsWebViewController.courseDetailsURL?.absoluteString
+        let courseURLString = courseDetailsWebViewController.courseDetailURL?.absoluteString
         XCTAssertEqual(courseURLString, "https://webview.edx.org/course/science-happiness-uc-berkeleyx-gg101x", "Course Info URL incorrectly determined");
     }
     
