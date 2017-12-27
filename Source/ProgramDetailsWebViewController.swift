@@ -1,5 +1,5 @@
 //
-//  ProgramDetailsViewController.swift
+//  ProgramDetailsWebViewController.swift
 //  edX
 //
 //  Created by Muhammad Zeeshan Arif on 21/12/2017.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProgramDetailsViewController: DiscoverWebViewController {
+class ProgramDetailsWebViewController: DiscoverWebViewController {
     
     var programDetailsURL:URL?
     var programEnrollmentConfig: ProgramEnrollmentConfig {

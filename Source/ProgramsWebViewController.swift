@@ -38,7 +38,7 @@ class ProgramsWebViewController: DiscoverWebViewController {
     }
     
     private func showProgramDetails(with url: URL) {
-        let controller = ProgramDetailsViewController(with: url, andBottomBar: self.bottomBar?.copy() as? UIView)
+        let controller = ProgramDetailsWebViewController(with: url, andBottomBar: self.bottomBar?.copy() as? UIView)
         navigationController?.pushViewController(controller, animated: true)
     }
     

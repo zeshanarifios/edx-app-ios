@@ -9,23 +9,10 @@
 import Foundation
 import edXCore
 
-private enum ProgramEnrollmentKeys: String, RawStringExtractable {
-    case courseDetailTemplate = "COURSE_DETAIL_TEMPLATE"
-}
-
-class ProgramEnrollmentWebviewConfig : EnrollmentWebviewConfig {
-    
-    let courseDetailTemplate: String?
-    
-    override init(dictionary: [String: AnyObject]) {
-        courseDetailTemplate = dictionary[ProgramEnrollmentKeys.courseDetailTemplate] as? String
-        super.init(dictionary: dictionary)
-    }
-}
 
 class ProgramEnrollmentConfig: EnrollmentConfig {
     
-    var webview: ProgramEnrollmentWebviewConfig
+    var webview: EnrollmentWebviewConfig
     var discoveryTitle: String{
         return Strings.discover
     }
@@ -34,7 +21,7 @@ class ProgramEnrollmentConfig: EnrollmentConfig {
     }
     
     override init(dictionary: [String: AnyObject]) {
-        webview = ProgramEnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
+        webview = EnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
         super.init(dictionary: dictionary)
     }
     
