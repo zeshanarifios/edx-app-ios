@@ -10,25 +10,13 @@ import UIKit
 
 class CourseDetailsWebViewController: DiscoverWebViewController {
     
-    var pathId: String
-    var courseEnrollmentConfig: CourseEnrollmentConfig {
-        return OEXConfig.shared().courseEnrollment
-    }
-    
-    var courseDetailURL:URL? {
-        guard let urlString = courseEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: self.pathId) else {
-            return nil
-        }
-        return URL(string: urlString)
-    }
-    
-    init(with pathId: String, and bottomBar: UIView?){
-        self.pathId = pathId
-        super.init(with: bottomBar)
+    var courseDetailURL:URL?
+    init(with courseDetailURL: URL, andBottomBar bar: UIView?) {
+        self.courseDetailURL = courseDetailURL
+        super.init(with: bar)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        pathId = ""
         super.init(coder: aDecoder)
     }
     
@@ -38,13 +26,12 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
         if let courseDetailUrl = courseDetailURL {
             webViewHelper?.loadRequest(withURL: courseDetailUrl)
         }
-        navigationItem.title = courseEnrollmentConfig.discoveryTitle
+        navigationItem.title = Strings.discover
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         OEXAnalytics.shared().trackScreen(withName: OEXAnalyticsScreenCourseInfo)
     }
-    
     
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {

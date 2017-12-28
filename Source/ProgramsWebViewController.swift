@@ -28,9 +28,10 @@ class ProgramsWebViewController: DiscoverWebViewController {
     }
     
     func getProgramDetailsURL(from url: URL) -> URL? {
+        // TODO: Remove path.replacingOccurrences(of: "https://www.edx.org/", with: "")
         guard url.isValidAppURLScheme,
             let path = url.queryParameters?[DiscoverCatalog.pathKey] as? String,
-            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: path)
+            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: path.replacingOccurrences(of: "https://www.edx.org/", with: ""))
         else {
             return nil
         }

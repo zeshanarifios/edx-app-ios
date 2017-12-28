@@ -34,7 +34,10 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
     
     // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        guard let url = request.url,
+        // TODO: Remove Test Code
+        let urlString = request.URLString
+        let repUrlString = urlString.replacingOccurrences(of: "https://www.edx.org/", with: "edxapp://course_info?path_id=")
+        guard let url = URL(string:repUrlString),//request.url,
               url.isValidAppURLScheme else {
             return true
         }
@@ -45,8 +48,10 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
             }
             break
         case DiscoverCatalog.Course.detailPath:
-            if let courseDetailPath = getCourseDetailPath(from: url) {
-                showCourseDetails(with: courseDetailPath)
+            if let courseDetailPath = getCourseDetailPath(from: url),
+                let courseDetailURLString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: courseDetailPath),
+                let courseDetailURL = URL(string: courseDetailURLString) {
+                showCourseDetails(with: courseDetailURL)
             }
             break
         default:

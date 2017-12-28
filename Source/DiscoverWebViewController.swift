@@ -25,6 +25,7 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
+        navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,8 +36,8 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
     }
     
     // MARK: - Local Methods -
-    func showCourseDetails(with pathId: String) {
-        let courseDetailsWebViewController = CourseDetailsWebViewController(with: pathId, and: bottomBar?.copy() as? UIView)
+    func showCourseDetails(with url: URL) {
+        let courseDetailsWebViewController = CourseDetailsWebViewController(with: url, andBottomBar: bottomBar?.copy() as? UIView)
         navigationController?.pushViewController(courseDetailsWebViewController, animated: true)
     }
     

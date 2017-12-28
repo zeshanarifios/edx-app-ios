@@ -9,7 +9,6 @@
 import Foundation
 import edXCore
 
-
 class ProgramEnrollmentConfig: EnrollmentConfig {
     
     var webview: EnrollmentWebviewConfig

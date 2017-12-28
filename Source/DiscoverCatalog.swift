@@ -23,7 +23,8 @@ enum DiscoverCatalog {
     }
     
     enum Program {
-        static let detailPath = "program_info/"
+        //TODO: Change to program_info/
+        static let detailPath = "course_info/"
     }
     
 }
