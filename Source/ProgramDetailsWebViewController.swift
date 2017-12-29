@@ -41,15 +41,15 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
               url.isValidAppURLScheme else {
             return true
         }
-        switch url.hostlessPath {
-        case DiscoverCatalog.Course.enrollPath:
+        switch url.host ?? "" {
+        case AppURLHost.courseEnrollment.rawValue:
             if let urlData = parse(url: url), let courseId = urlData.courseId {
                 enrollInCourse(courseID: courseId, emailOpt: urlData.emailOptIn)
             }
             break
-        case DiscoverCatalog.Course.detailPath:
+        case AppURLHost.courseDetail.rawValue:
             if let courseDetailPath = getCourseDetailPath(from: url),
-                let courseDetailURLString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: courseDetailPath),
+                let courseDetailURLString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: courseDetailPath),
                 let courseDetailURL = URL(string: courseDetailURLString) {
                 showCourseDetails(with: courseDetailURL)
             }

@@ -11,17 +11,8 @@ import edXCore
 
 class ProgramEnrollmentConfig: EnrollmentConfig {
     
-    var webview: EnrollmentWebviewConfig
-    var discoveryTitle: String{
-        return Strings.discover
-    }
     override var isEnabled: Bool {
         return type == .webview
-    }
-    
-    override init(dictionary: [String: AnyObject]) {
-        webview = EnrollmentWebviewConfig(dictionary: dictionary[EnrollmentKeys.webview] as? [String: AnyObject] ?? [:])
-        super.init(dictionary: dictionary)
     }
     
 }

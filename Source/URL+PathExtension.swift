@@ -10,15 +10,15 @@ import Foundation
 
 extension URL {
     
-    var hostlessPath: String {
+    var appURLHost: String {
         guard let host = host else {
-            return path
+            return ""
         }
-        return "\(host)/\(path)"
+        return host
     }
-    
+
     var isValidAppURLScheme: Bool {
-        return self.scheme ?? "" == DiscoverCatalog.appURLScheme ? true : false
+        return self.scheme ?? "" == AppURLString.appURLScheme.rawValue ? true : false
     }
     
     var queryParameters: [String: Any]? {

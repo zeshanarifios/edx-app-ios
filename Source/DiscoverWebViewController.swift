@@ -36,20 +36,48 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
     }
     
     // MARK: - Local Methods -
+    
+    func appURLHostIfValid(url: URL) -> AppURLHost? {
+        // Verify URL Scheme
+        guard url.isValidAppURLScheme else {
+            // Do something for invalid appurl scheme
+            return nil
+        }
+        // Verify App Host is known
+        guard let appURLHost = AppURLHost(rawValue: url.appURLHost) else {
+            return nil
+        }
+        return appURLHost
+    }
+    
+    func navigate(to url: URL)  {
+        guard let appURLHost = appURLHostIfValid(url: url) else { return }
+        switch appURLHost {
+        case .courseDetail:
+            break
+        case .courseEnrollment:
+            break
+        case .programDetail:
+            break
+        }
+        
+    }
+    
     func showCourseDetails(with url: URL) {
         let courseDetailsWebViewController = CourseDetailsWebViewController(with: url, andBottomBar: bottomBar?.copy() as? UIView)
         navigationController?.pushViewController(courseDetailsWebViewController, animated: true)
     }
     
     func getCourseDetailPath(from url: URL) -> String? {
-        return url.isValidAppURLScheme && url.hostlessPath == DiscoverCatalog.Course.detailPath ? url.queryParameters?[DiscoverCatalog.pathKey] as? String : nil
+        return url.isValidAppURLScheme && url.host ?? "" == AppURLHost.courseDetail.rawValue ? url.queryParameters?[AppURLParameterKey.pathId] as? String : nil
     }
+    
     func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard url.isValidAppURLScheme, url.hostlessPath == DiscoverCatalog.Course.enrollPath else {
+        guard url.isValidAppURLScheme, url.host ?? "" == AppURLHost.courseEnrollment.rawValue else {
             return nil
         }
-        let courseId = url.queryParameters?[DiscoverCatalog.Course.courseIdKey] as? String
-        let emailOptIn = url.queryParameters?[DiscoverCatalog.emailOptInKey] as? Bool
+        let courseId = url.queryParameters?[AppURLParameterKey.courseId] as? String
+        let emailOptIn = url.queryParameters?[AppURLParameterKey.emailOptIn] as? Bool
         return (courseId , emailOptIn ?? false)
     }
     
@@ -105,6 +133,4 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         return true
     }
     
-    
-
 }

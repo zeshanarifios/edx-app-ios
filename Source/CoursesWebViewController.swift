@@ -50,7 +50,7 @@ class CoursesWebViewController: DiscoverWebViewController{
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
         guard let url = request.url,
             let courseDetailPath = getCourseDetailPath(from: url),
-            let courseDetailURLString = courseEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: courseDetailPath),
+            let courseDetailURLString = courseEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: courseDetailPath),
             let courseDetailURL = URL(string: courseDetailURLString) else {
             return true
         }

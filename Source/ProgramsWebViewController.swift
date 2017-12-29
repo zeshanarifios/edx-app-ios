@@ -30,8 +30,8 @@ class ProgramsWebViewController: DiscoverWebViewController {
     func getProgramDetailsURL(from url: URL) -> URL? {
         // TODO: Remove path.replacingOccurrences(of: "https://www.edx.org/", with: "")
         guard url.isValidAppURLScheme,
-            let path = url.queryParameters?[DiscoverCatalog.pathKey] as? String,
-            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: DiscoverCatalog.pathPlaceHolder, with: path.replacingOccurrences(of: "https://www.edx.org/", with: ""))
+            let path = url.queryParameters?[AppURLParameterKey.pathId] as? String,
+            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: path.replacingOccurrences(of: "https://www.edx.org/", with: ""))
         else {
             return nil
         }
@@ -51,7 +51,7 @@ class ProgramsWebViewController: DiscoverWebViewController {
     override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
         guard let url = request.url,
             url.isValidAppURLScheme,
-            url.hostlessPath == DiscoverCatalog.Program.detailPath,
+            url.host ?? "" == AppURLHost.programDetail.rawValue,
             let programDetailsURL = getProgramDetailsURL(from: url) else {
             return true
         }
