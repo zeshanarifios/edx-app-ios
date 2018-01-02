@@ -21,6 +21,7 @@ import WebKit
 
 class DiscoverWebViewHelper: NSObject  {
     
+    let bottomBarHeight: CGFloat = 50.0
     fileprivate lazy var loadController: LoadStateViewController = {
         return LoadStateViewController()
     }()
@@ -78,6 +79,7 @@ class DiscoverWebViewHelper: NSObject  {
                     make.leading.equalTo(container.view)
                     make.trailing.equalTo(container.view)
                     make.bottom.equalTo(container.view)
+                    make.height.equalTo(bottomBarHeight)
                 }
             }
         }
