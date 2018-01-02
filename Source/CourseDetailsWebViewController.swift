@@ -28,21 +28,10 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
         }
         navigationItem.title = Strings.discover
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         OEXAnalytics.shared().trackScreen(withName: OEXAnalyticsScreenCourseInfo)
-    }
-    
-    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
-    override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        guard let url = request.url,
-            let urlData = parse(url: url),
-            let courseId = urlData.courseId else {
-            return true
-        }
-        enrollInCourse(courseID: courseId, emailOpt: urlData.emailOptIn)
-        return false
-
     }
     
 }

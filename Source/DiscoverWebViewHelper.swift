@@ -11,6 +11,7 @@ import WebKit
 
 @objc protocol DiscoverWebViewHelperDataSource: class {
     var webViewNativeSearchEnabled: Bool { get }
+    var webViewSearchBaseURL: URL? { get }
     var webViewParentController: UIViewController { get }
 }
 
@@ -34,7 +35,6 @@ class DiscoverWebViewHelper: NSObject  {
     weak var delegate : DiscoverWebViewHelperDelegate?
     weak var dataSource : DiscoverWebViewHelperDataSource?
     fileprivate var request : URLRequest?
-    var searchBaseURL: URL?
     
     init(config : OEXConfig?, delegate : DiscoverWebViewHelperDelegate?, dataSource : DiscoverWebViewHelperDataSource?, bottomBar: UIView?) {
         
@@ -159,7 +159,7 @@ extension DiscoverWebViewHelper: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        guard let searchTerms = searchBar.text, let searchURL = searchBaseURL else { return }
+        guard let searchTerms = searchBar.text, let searchURL = dataSource?.webViewSearchBaseURL else { return }
         if let URL = DiscoverWebViewHelper.buildQuery(baseURL: searchURL.URLString, toolbarString: searchTerms) {
             loadRequest(withURL: URL)
         }

@@ -20,43 +20,22 @@ class ProgramsWebViewController: DiscoverWebViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
-        webViewHelper?.searchBaseURL = programEnrollmentConfig.webview.searchURL
         if let urlToLoad = programEnrollmentConfig.webview.searchURL
         {
             webViewHelper?.loadRequest(withURL: urlToLoad)
         }
     }
     
-    func getProgramDetailsURL(from url: URL) -> URL? {
-        // TODO: Remove path.replacingOccurrences(of: "https://www.edx.org/", with: "")
-        guard url.isValidAppURLScheme,
-            let path = url.queryParameters?[AppURLParameterKey.pathId] as? String,
-            let programDetailUrlString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: path.replacingOccurrences(of: "https://www.edx.org/", with: ""))
-        else {
-            return nil
-        }
-        return URL(string: programDetailUrlString)
+    override var detailTemplate: String? {
+        return programEnrollmentConfig.webview.detailTemplate
     }
     
-    private func showProgramDetails(with url: URL) {
-        let controller = ProgramDetailsWebViewController(with: url, andBottomBar: self.bottomBar?.copy() as? UIView)
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     override var webViewNativeSearchEnabled: Bool {
         return programEnrollmentConfig.webview.searchbarEnabled
     }
     
-    override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        guard let url = request.url,
-            url.isValidAppURLScheme,
-            url.host ?? "" == AppURLHost.programDetail.rawValue,
-            let programDetailsURL = getProgramDetailsURL(from: url) else {
-            return true
-        }
-        showProgramDetails(with: programDetailsURL)
-        return false
+    override var webViewSearchBaseURL: URL? {
+        return programEnrollmentConfig.webview.searchURL
     }
     
 }

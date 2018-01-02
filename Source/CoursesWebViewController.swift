@@ -13,7 +13,7 @@ enum CoursesWebViewType {
     case exploreSubjects
 }
 
-class CoursesWebViewController: DiscoverWebViewController{
+class CoursesWebViewController: DiscoverWebViewController {
     
     var coursesWebViewType: CoursesWebViewType?
     var courseEnrollmentConfig: CourseEnrollmentConfig {
@@ -26,7 +26,6 @@ class CoursesWebViewController: DiscoverWebViewController{
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
-        webViewHelper?.searchBaseURL = courseEnrollmentConfig.webview.searchURL
         if let urlToLoad =
             coursesWebViewType ?? .discoverCourses == .discoverCourses ? courseEnrollmentConfig.webview.searchURL : courseEnrollmentConfig.webview.exploreSubjectsURL {
             webViewHelper?.loadRequest(withURL: urlToLoad)
@@ -42,20 +41,16 @@ class CoursesWebViewController: DiscoverWebViewController{
         return OEXStyles.shared().standardStatusBarStyle();
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
+    override var detailTemplate: String? {
+        return courseEnrollmentConfig.webview.detailTemplate
+    }
+    
     override var webViewNativeSearchEnabled: Bool {
         return courseEnrollmentConfig.webview.searchbarEnabled
     }
     
-    override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        guard let url = request.url,
-            let courseDetailPath = getCourseDetailPath(from: url),
-            let courseDetailURLString = courseEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: courseDetailPath),
-            let courseDetailURL = URL(string: courseDetailURLString) else {
-            return true
-        }
-        
-        showCourseDetails(with: courseDetailURL)
-        return false
+    override var webViewSearchBaseURL: URL? {
+        return courseEnrollmentConfig.webview.searchURL
     }
+
 }

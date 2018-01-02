@@ -11,10 +11,7 @@ import Foundation
 extension URL {
     
     var appURLHost: String {
-        guard let host = host else {
-            return ""
-        }
-        return host
+        return host ?? ""
     }
 
     var isValidAppURLScheme: Bool {

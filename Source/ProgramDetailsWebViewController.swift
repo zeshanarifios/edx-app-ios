@@ -14,6 +14,7 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
     var programEnrollmentConfig: ProgramEnrollmentConfig {
         return OEXConfig.shared().programEnrollment
     }
+    
     init(with programDetailsURL: URL, andBottomBar bar: UIView?) {
         self.programDetailsURL = programDetailsURL
         super.init(with: bar)
@@ -32,32 +33,8 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
         navigationItem.title = programEnrollmentConfig.discoveryTitle
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
-    override func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        // TODO: Remove Test Code
-        let urlString = request.URLString
-        let repUrlString = urlString.replacingOccurrences(of: "https://www.edx.org/", with: "edxapp://course_info?path_id=")
-        guard let url = URL(string:repUrlString),//request.url,
-              url.isValidAppURLScheme else {
-            return true
-        }
-        switch url.host ?? "" {
-        case AppURLHost.courseEnrollment.rawValue:
-            if let urlData = parse(url: url), let courseId = urlData.courseId {
-                enrollInCourse(courseID: courseId, emailOpt: urlData.emailOptIn)
-            }
-            break
-        case AppURLHost.courseDetail.rawValue:
-            if let courseDetailPath = getCourseDetailPath(from: url),
-                let courseDetailURLString = programEnrollmentConfig.webview.detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: courseDetailPath),
-                let courseDetailURL = URL(string: courseDetailURLString) {
-                showCourseDetails(with: courseDetailURL)
-            }
-            break
-        default:
-            break
-        }
-        
-        return false
+    override var detailTemplate: String? {
+        return programEnrollmentConfig.webview.detailTemplate
     }
+    
 }

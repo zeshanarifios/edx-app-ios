@@ -23,17 +23,20 @@ class ProgramEnrollmentConfigTests: XCTestCase {
     
     func testProgramEnrollmentWebview() {
         let sampleSearchURL = "http://example.com/program-search"
+        let sampleDetailTemplate = "http://example.com/{path_id}"
         let configDictionary = [
             "PROGRAM_ENROLLMENT": [
                 "TYPE": "webview",
                 "WEBVIEW" : [
-                    "PROGRAM_SEARCH_URL" : sampleSearchURL,
+                    "SEARCH_URL" : sampleSearchURL,
+                    "DETAIL_TEMPLATE" : sampleDetailTemplate,
                     "SEARCH_BAR_ENABLED" : true
                 ]
             ]
         ]
         let config = OEXConfig(dictionary: configDictionary)
         XCTAssertEqual(config.programEnrollment.type, .webview)
+        XCTAssertEqual(config.programEnrollment.webview.detailTemplate!, sampleDetailTemplate)
         XCTAssertEqual(config.programEnrollment.webview.searchURL!.absoluteString, sampleSearchURL)
         XCTAssertTrue(config.programEnrollment.webview.searchbarEnabled)
     }

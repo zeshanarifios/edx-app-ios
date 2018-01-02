@@ -12,6 +12,9 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
 
     var bottomBar: UIView?
     var webViewHelper: DiscoverWebViewHelper?
+    var detailTemplate: String? {
+        return nil
+    }
     
     init(with bottomBar: UIView?) {
         self.bottomBar = bottomBar
@@ -36,44 +39,63 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
     }
     
     // MARK: - Local Methods -
-    
     func appURLHostIfValid(url: URL) -> AppURLHost? {
-        // Verify URL Scheme
-        guard url.isValidAppURLScheme else {
-            // Do something for invalid appurl scheme
-            return nil
-        }
-        // Verify App Host is known
-        guard let appURLHost = AppURLHost(rawValue: url.appURLHost) else {
+        guard url.isValidAppURLScheme, let appURLHost = AppURLHost(rawValue: url.appURLHost) else {
             return nil
         }
         return appURLHost
     }
     
-    func navigate(to url: URL)  {
-        guard let appURLHost = appURLHostIfValid(url: url) else { return }
+    private func navigate(to url: URL) -> Bool {
+        guard let appURLHost = appURLHostIfValid(url: url) else { return false }
         switch appURLHost {
         case .courseDetail:
+            if let courseDetailPath = getCourseDetailPath(from: url),
+                let courseDetailURLString = detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: courseDetailPath),
+                let courseDetailURL = URL(string: courseDetailURLString) {
+                showCourseDetails(with: courseDetailURL)
+            }
             break
         case .courseEnrollment:
+            if let urlData = parse(url: url), let courseId = urlData.courseId {
+                enrollInCourse(courseID: courseId, emailOpt: urlData.emailOptIn)
+            }
             break
         case .programDetail:
+            if let programDetailsURL = getProgramDetailsURL(from: url) {
+                showProgramDetails(with: programDetailsURL)
+            }
             break
         }
-        
+        return true
     }
     
-    func showCourseDetails(with url: URL) {
+    private func getProgramDetailsURL(from url: URL) -> URL? {
+        guard url.isValidAppURLScheme,
+            let path = url.queryParameters?[AppURLParameterKey.pathId] as? String,
+            let programDetailUrlString = detailTemplate?.replacingOccurrences(of: AppURLString.pathPlaceHolder.rawValue, with: path)
+            else {
+                return nil
+        }
+        return URL(string: programDetailUrlString)
+    }
+    
+    private func showProgramDetails(with url: URL) {
+        let controller = ProgramDetailsWebViewController(with: url, andBottomBar: self.bottomBar?.copy() as? UIView)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    private func showCourseDetails(with url: URL) {
         let courseDetailsWebViewController = CourseDetailsWebViewController(with: url, andBottomBar: bottomBar?.copy() as? UIView)
         navigationController?.pushViewController(courseDetailsWebViewController, animated: true)
     }
     
     func getCourseDetailPath(from url: URL) -> String? {
-        return url.isValidAppURLScheme && url.host ?? "" == AppURLHost.courseDetail.rawValue ? url.queryParameters?[AppURLParameterKey.pathId] as? String : nil
+        return url.isValidAppURLScheme && url.appURLHost == AppURLHost.courseDetail.rawValue ? url.queryParameters?[AppURLParameterKey.pathId] as? String : nil
     }
     
     func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard url.isValidAppURLScheme, url.host ?? "" == AppURLHost.courseEnrollment.rawValue else {
+        guard url.isValidAppURLScheme, url.appURLHost == AppURLHost.courseEnrollment.rawValue else {
             return nil
         }
         let courseId = url.queryParameters?[AppURLParameterKey.courseId] as? String
@@ -81,19 +103,19 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         return (courseId , emailOptIn ?? false)
     }
     
-    func showMainScreen(with message: String, and courseId: String) {
+    private func showMainScreen(with message: String, and courseId: String) {
         OEXRouter.shared().showMyCourses(animated: true, pushingCourseWithID: courseId)
         perform(#selector(postEnrollmentSuccessNotification), with: message, afterDelay: 0.5)
     }
     
-    func postEnrollmentSuccessNotification(message: String) {
+    @objc private func postEnrollmentSuccessNotification(message: String) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: EnrollmentShared.successNotification), object: message)
         if isModal() {
             view.window?.rootViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
-    func enrollInCourse(courseID: String, emailOpt: Bool) {
+    private func enrollInCourse(courseID: String, emailOpt: Bool) {
         
         let environment = OEXRouter.shared().environment;
         environment.analytics.trackCourseEnrollment(courseId: courseID, name: AnalyticsEventName.CourseEnrollmentClicked.rawValue, displayName: AnalyticsDisplayName.EnrolledCourseClicked.rawValue)
@@ -122,15 +144,24 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         }
     }
     
-    // MARK: - DiscoverWebViewHelperDelegate and DataSource Methods -
     var webViewNativeSearchEnabled: Bool {
         return false
     }
+    
+    var webViewSearchBaseURL: URL? {
+        return nil
+    }
+    
     var webViewParentController: UIViewController {
         return self
     }
+    
     func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
-        return true
+        guard let url = request.url else {
+            return true
+        }
+        let didNavigate = navigate(to: url)
+        return !didNavigate
     }
     
 }

@@ -637,6 +637,7 @@
 		B78823A81FC6F69900F9CD61 /* RegistrationFieldController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78823A71FC6F69900F9CD61 /* RegistrationFieldController.swift */; };
 		B78823AC1FC709BD00F9CD61 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78823AB1FC709BD00F9CD61 /* String+Validation.swift */; };
 		B78823B01FC80CBB00F9CD61 /* RegistrationFieldControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78823AF1FC80CBB00F9CD61 /* RegistrationFieldControllerFactory.swift */; };
+		B7CEF73C1FFA565300A89982 /* DiscoverWebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CEF73B1FFA565300A89982 /* DiscoverWebViewTests.swift */; };
 		BD3838541DD1CA7E00805697 /* OEXFontsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3838531DD1CA7E00805697 /* OEXFontsTests.swift */; };
 		BD7C6C3E1DCA32370004D135 /* OEXFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7C6C3D1DCA32360004D135 /* OEXFonts.swift */; };
 		BD7C6C401DCA329A0004D135 /* fonts.json in Resources */ = {isa = PBXBuildFile; fileRef = BD7C6C3F1DCA329A0004D135 /* fonts.json */; };
@@ -1537,6 +1538,7 @@
 		B78823A71FC6F69900F9CD61 /* RegistrationFieldController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFieldController.swift; sourceTree = "<group>"; };
 		B78823AB1FC709BD00F9CD61 /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		B78823AF1FC80CBB00F9CD61 /* RegistrationFieldControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFieldControllerFactory.swift; sourceTree = "<group>"; };
+		B7CEF73B1FFA565300A89982 /* DiscoverWebViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebViewTests.swift; sourceTree = "<group>"; };
 		BD3838531DD1CA7E00805697 /* OEXFontsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OEXFontsTests.swift; sourceTree = "<group>"; };
 		BD7C6C3D1DCA32360004D135 /* OEXFonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OEXFonts.swift; sourceTree = "<group>"; };
 		BD7C6C3F1DCA329A0004D135 /* fonts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = fonts.json; sourceTree = "<group>"; };
@@ -3303,6 +3305,7 @@
 				B4B285E91A9B182900DD603A /* OEXConfigTests.m */,
 				779376541BF15A8F00900A8C /* OEXConfig+URLCredentialProviderTests.swift */,
 				77AE2F611ABB71840027E799 /* OEXFileUtilityTests.m */,
+				B7CEF73B1FFA565300A89982 /* DiscoverWebViewTests.swift */,
 				B70EBD961FEBA21700D31A50 /* DiscoverCoursesTests.swift */,
 				7778F0941ABA2C3600B4CDA0 /* OEXRegistrationFieldEmailViewTests.m */,
 				77F76A6F1B0BD5EC00ED3E39 /* OEXSession+AuthorizationTests.swift */,
@@ -4551,6 +4554,7 @@
 				773181441B7066E5000CC050 /* DiscussionNewPostViewControllerTests.swift in Sources */,
 				7731813D1B6C237F000CC050 /* DiscussionTopicTests.swift in Sources */,
 				6987A86B1D6C57C100E9D183 /* OEXColorsTests.swift in Sources */,
+				B7CEF73C1FFA565300A89982 /* DiscoverWebViewTests.swift in Sources */,
 				E08A4FBF1D1A6B9700B1A40A /* DiscussionCommentsViewControllerTests.swift in Sources */,
 				775E5A831BE1C91B0046B26B /* LiveObjectCacheTests.swift in Sources */,
 				779998231C3C1EE00058E5FE /* EnrolledCoursesViewControllerTests.swift in Sources */,
