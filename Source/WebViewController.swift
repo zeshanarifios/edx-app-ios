@@ -1,5 +1,5 @@
 //
-//  DiscoverWebViewController.swift
+//  WebViewController.swift
 //  edX
 //
 //  Created by Muhammad Zeeshan Arif on 19/12/2017.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate, DiscoverWebViewHelperDataSource {
-
+class WebViewController: UIViewController, WebViewHelperDelegate {
+    
     var bottomBar: UIView?
-    var webViewHelper: DiscoverWebViewHelper?
+    var webViewHelper: WebViewHelper?
     var detailTemplate: String? {
         return nil
     }
@@ -27,6 +27,7 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        webViewHelper = WebViewHelper(config:OEXConfig.shared(), delegate: self, bottomBar: bottomBar)
         view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
         navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
     }
@@ -108,7 +109,7 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         perform(#selector(postEnrollmentSuccessNotification), with: message, afterDelay: 0.5)
     }
     
-    @objc private func postEnrollmentSuccessNotification(message: String) {
+    private func postEnrollmentSuccessNotification(message: String) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: EnrollmentShared.successNotification), object: message)
         if isModal() {
             view.window?.rootViewController?.dismiss(animated: true, completion: nil)
@@ -144,6 +145,8 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         }
     }
     
+    // MARK: - WebViewHelperDelegate -
+    
     var webViewNativeSearchEnabled: Bool {
         return false
     }
@@ -156,12 +159,15 @@ class DiscoverWebViewController: UIViewController, DiscoverWebViewHelperDelegate
         return self
     }
     
-    func webViewHelper(helper: DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool {
+    func webView(helper: WebViewHelper, shouldLoad request: URLRequest) -> Bool {
         guard let url = request.url else {
             return true
         }
         let didNavigate = navigate(to: url)
         return !didNavigate
+    }
+    
+    func webViewDidFinishLoading(_ helper: WebViewHelper) {
     }
     
 }

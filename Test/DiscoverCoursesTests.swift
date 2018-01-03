@@ -51,7 +51,7 @@ class DiscoverCoursesTests: XCTestCase {
         let queryString = "mobile linux"
         let expected = "http://www.fakex.com/course?search_query=mobile+linux"
         let expectedURL = URL(string: expected)
-        let output = DiscoverWebViewHelper.buildQuery(baseURL: baseURL, toolbarString: queryString)
+        let output = WebViewHelper.buildQuery(baseURL: baseURL, toolbarString: queryString)
         XCTAssertEqual(output, expectedURL);
     }
     
@@ -60,7 +60,7 @@ class DiscoverCoursesTests: XCTestCase {
         let queryString = "mobile linux"
         let expected = "http://www.fakex.com/course?type=mobile&search_query=mobile+linux"
         let expectedURL = URL(string: expected)
-        let output = DiscoverWebViewHelper.buildQuery(baseURL: baseURL, toolbarString: queryString)
+        let output = WebViewHelper.buildQuery(baseURL: baseURL, toolbarString: queryString)
         XCTAssertEqual(output, expectedURL);
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProgramsWebViewController: DiscoverWebViewController {
+class ProgramsWebViewController: WebViewController {
     
     var programEnrollmentConfig: ProgramEnrollmentConfig {
         return OEXConfig.shared().programEnrollment
@@ -18,8 +18,6 @@ class ProgramsWebViewController: DiscoverWebViewController {
         super.viewDidLoad()
         navigationItem.title = programEnrollmentConfig.discoveryTitle
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
-        view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
         if let urlToLoad = programEnrollmentConfig.webview.searchURL
         {
             webViewHelper?.loadRequest(withURL: urlToLoad)

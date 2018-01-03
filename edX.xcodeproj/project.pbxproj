@@ -613,18 +613,16 @@
 		B4D5C7EB1A6FBAA300427D1D /* OEXAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D5C7E61A6FBAA300427D1D /* OEXAccessToken.m */; };
 		B4D5C7EC1A6FBAA300427D1D /* OEXPersistentCredentialStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D5C7E81A6FBAA300427D1D /* OEXPersistentCredentialStorage.m */; };
 		B4D5C7ED1A6FBAA300427D1D /* OEXSession.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D5C7EA1A6FBAA300427D1D /* OEXSession.m */; };
-		B70EBD831FE9414500D31A50 /* DiscoverWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBD821FE9414500D31A50 /* DiscoverWebViewController.swift */; };
+		B70EBD831FE9414500D31A50 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBD821FE9414500D31A50 /* WebViewController.swift */; };
 		B70EBD871FEA55A200D31A50 /* URL+PathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBD861FEA55A200D31A50 /* URL+PathExtension.swift */; };
 		B70EBD891FEA7B1800D31A50 /* DiscoveryCatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBD881FEA7B1800D31A50 /* DiscoveryCatalogViewController.swift */; };
 		B70EBD991FEBA4DC00D31A50 /* DiscoverCoursesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBD961FEBA21700D31A50 /* DiscoverCoursesTests.swift */; };
-		B70EBDA91FEBF8CC00D31A50 /* DiscoverCoursesWebViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDA61FEBF8CC00D31A50 /* DiscoverCoursesWebViewHelper.swift */; };
-		B70EBDAA1FEBF8CC00D31A50 /* DiscoverProgramsWebViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDA71FEBF8CC00D31A50 /* DiscoverProgramsWebViewHelper.swift */; };
-		B70EBDAB1FEBF8CC00D31A50 /* DiscoverWebViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDA81FEBF8CC00D31A50 /* DiscoverWebViewHelper.swift */; };
+		B70EBDAB1FEBF8CC00D31A50 /* WebViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDA81FEBF8CC00D31A50 /* WebViewHelper.swift */; };
 		B70EBDAE1FEBF8F800D31A50 /* ProgramDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDAC1FEBF8F800D31A50 /* ProgramDetailsWebViewController.swift */; };
 		B70EBDAF1FEBF8F800D31A50 /* ProgramsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDAD1FEBF8F800D31A50 /* ProgramsWebViewController.swift */; };
 		B70EBDB11FEBF94E00D31A50 /* CourseDetailsWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDB01FEBF94E00D31A50 /* CourseDetailsWebViewController.swift */; };
 		B70EBDB31FEBF96E00D31A50 /* CoursesWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDB21FEBF96E00D31A50 /* CoursesWebViewController.swift */; };
-		B70EBDB51FEC072A00D31A50 /* DiscoverCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDB41FEC072A00D31A50 /* DiscoverCatalog.swift */; };
+		B70EBDB51FEC072A00D31A50 /* WebViewEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70EBDB41FEC072A00D31A50 /* WebViewEnums.swift */; };
 		B71701391FE7C66A000642C5 /* EnrollmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71701381FE7C66A000642C5 /* EnrollmentConfig.swift */; };
 		B717013A1FE7C66A000642C5 /* EnrollmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71701381FE7C66A000642C5 /* EnrollmentConfig.swift */; };
 		B717013C1FE7C694000642C5 /* CourseEnrollmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717013B1FE7C694000642C5 /* CourseEnrollmentConfig.swift */; };
@@ -1517,18 +1515,16 @@
 		B4D5C7E91A6FBAA300427D1D /* OEXSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEXSession.h; sourceTree = "<group>"; };
 		B4D5C7EA1A6FBAA300427D1D /* OEXSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEXSession.m; sourceTree = "<group>"; };
 		B4D5C7EE1A6FBAC300427D1D /* OEXAccessToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEXAccessToken.h; sourceTree = "<group>"; };
-		B70EBD821FE9414500D31A50 /* DiscoverWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebViewController.swift; sourceTree = "<group>"; };
+		B70EBD821FE9414500D31A50 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		B70EBD861FEA55A200D31A50 /* URL+PathExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+PathExtension.swift"; sourceTree = "<group>"; };
 		B70EBD881FEA7B1800D31A50 /* DiscoveryCatalogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryCatalogViewController.swift; sourceTree = "<group>"; };
 		B70EBD961FEBA21700D31A50 /* DiscoverCoursesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCoursesTests.swift; sourceTree = "<group>"; };
-		B70EBDA61FEBF8CC00D31A50 /* DiscoverCoursesWebViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCoursesWebViewHelper.swift; sourceTree = "<group>"; };
-		B70EBDA71FEBF8CC00D31A50 /* DiscoverProgramsWebViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverProgramsWebViewHelper.swift; sourceTree = "<group>"; };
-		B70EBDA81FEBF8CC00D31A50 /* DiscoverWebViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebViewHelper.swift; sourceTree = "<group>"; };
+		B70EBDA81FEBF8CC00D31A50 /* WebViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHelper.swift; sourceTree = "<group>"; };
 		B70EBDAC1FEBF8F800D31A50 /* ProgramDetailsWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramDetailsWebViewController.swift; sourceTree = "<group>"; };
 		B70EBDAD1FEBF8F800D31A50 /* ProgramsWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramsWebViewController.swift; sourceTree = "<group>"; };
 		B70EBDB01FEBF94E00D31A50 /* CourseDetailsWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailsWebViewController.swift; sourceTree = "<group>"; };
 		B70EBDB21FEBF96E00D31A50 /* CoursesWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesWebViewController.swift; sourceTree = "<group>"; };
-		B70EBDB41FEC072A00D31A50 /* DiscoverCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCatalog.swift; sourceTree = "<group>"; };
+		B70EBDB41FEC072A00D31A50 /* WebViewEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewEnums.swift; sourceTree = "<group>"; };
 		B71701381FE7C66A000642C5 /* EnrollmentConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnrollmentConfig.swift; sourceTree = "<group>"; };
 		B717013B1FE7C694000642C5 /* CourseEnrollmentConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseEnrollmentConfig.swift; sourceTree = "<group>"; };
 		B717013E1FE7C6AA000642C5 /* ProgramEnrollmentConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramEnrollmentConfig.swift; sourceTree = "<group>"; };
@@ -2843,11 +2839,9 @@
 		9C9B7F701A8CC68D00A857B2 /* Course Enrollment */ = {
 			isa = PBXGroup;
 			children = (
-				B70EBDB41FEC072A00D31A50 /* DiscoverCatalog.swift */,
-				B70EBDA81FEBF8CC00D31A50 /* DiscoverWebViewHelper.swift */,
-				B70EBDA61FEBF8CC00D31A50 /* DiscoverCoursesWebViewHelper.swift */,
-				B70EBDA71FEBF8CC00D31A50 /* DiscoverProgramsWebViewHelper.swift */,
-				B70EBD821FE9414500D31A50 /* DiscoverWebViewController.swift */,
+				B70EBDB41FEC072A00D31A50 /* WebViewEnums.swift */,
+				B70EBDA81FEBF8CC00D31A50 /* WebViewHelper.swift */,
+				B70EBD821FE9414500D31A50 /* WebViewController.swift */,
 				B70EBDB21FEBF96E00D31A50 /* CoursesWebViewController.swift */,
 				B70EBDB01FEBF94E00D31A50 /* CourseDetailsWebViewController.swift */,
 				B70EBDAD1FEBF8F800D31A50 /* ProgramsWebViewController.swift */,
@@ -4180,7 +4174,6 @@
 				778F177A1C0D125A0099BF93 /* CoursesTableViewController.swift in Sources */,
 				77ADF4AF1AC1F80E00AC8955 /* OEXGoogleAuthProvider.m in Sources */,
 				1A7CEA331BABA8C70043A58C /* ProfileImageView.swift in Sources */,
-				B70EBDA91FEBF8CC00D31A50 /* DiscoverCoursesWebViewHelper.swift in Sources */,
 				E0A1A03D1E93A7B800510488 /* LayoutConstraint.swift in Sources */,
 				77236EED1C21C376006AC1A4 /* Paginator.swift in Sources */,
 				7727EC351BBC73F300C9987F /* RevealViewController.swift in Sources */,
@@ -4228,7 +4221,6 @@
 				77509D981BE1916600B10CD3 /* UserProfileManager.swift in Sources */,
 				77E209851AF158190071316D /* CourseOutline.swift in Sources */,
 				1A8172531C3C21DE007262AA /* TwitterConfig.swift in Sources */,
-				B70EBDAA1FEBF8CC00D31A50 /* DiscoverProgramsWebViewHelper.swift in Sources */,
 				B4D5C7ED1A6FBAA300427D1D /* OEXSession.m in Sources */,
 				B4B6D6481A95CF33000F44E8 /* OEXUserLicenseAgreementViewController.m in Sources */,
 				69EFBB0D1E36270000FF66C4 /* RatingContainerView.swift in Sources */,
@@ -4285,7 +4277,7 @@
 				1940D8CB1A230E25000318A3 /* OEXAnalytics.m in Sources */,
 				E0A1A02F1E93A78700510488 /* ConstraintAttributes.swift in Sources */,
 				1A8AC0C01BB49EC5009D8F5E /* UserProfile.swift in Sources */,
-				B70EBD831FE9414500D31A50 /* DiscoverWebViewController.swift in Sources */,
+				B70EBD831FE9414500D31A50 /* WebViewController.swift in Sources */,
 				E06292751F7BAFFF006D5EFC /* BranchConfig.swift in Sources */,
 				1AC147371BCEB14900E0A230 /* CGRect+OEXHelpers.swift in Sources */,
 				7714A2601AB37CF7004C2254 /* OEXRegistrationFieldError.m in Sources */,
@@ -4337,10 +4329,10 @@
 				1904A14C1A1386C2006A5524 /* OEXDBManager.m in Sources */,
 				BE54F19C195F080E005D069F /* Reachability.m in Sources */,
 				775434861AD73D1900635A40 /* OEXParseConfig.m in Sources */,
-				B70EBDB51FEC072A00D31A50 /* DiscoverCatalog.swift in Sources */,
+				B70EBDB51FEC072A00D31A50 /* WebViewEnums.swift in Sources */,
 				1AE0A6C81BF4F68A00E14917 /* CourseCertificateCell.swift in Sources */,
 				770848BC1B209EF4002FEEEE /* BorderStyle.swift in Sources */,
-				B70EBDAB1FEBF8CC00D31A50 /* DiscoverWebViewHelper.swift in Sources */,
+				B70EBDAB1FEBF8CC00D31A50 /* WebViewHelper.swift in Sources */,
 				228CBD881ECF553E0054D063 /* CourseShareUtmParameters.swift in Sources */,
 				19A1339419CAAC21003ADD24 /* OEXClosedCaptionTableViewCell.m in Sources */,
 				B4B6D6051A949EFC000F44E8 /* OEXRegistrationAgreement.m in Sources */,

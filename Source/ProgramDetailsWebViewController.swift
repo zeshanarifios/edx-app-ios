@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProgramDetailsWebViewController: DiscoverWebViewController {
+class ProgramDetailsWebViewController: WebViewController {
     
     var programDetailsURL:URL?
     var programEnrollmentConfig: ProgramEnrollmentConfig {
@@ -26,7 +26,6 @@ class ProgramDetailsWebViewController: DiscoverWebViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewHelper = DiscoverProgramsWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         if let programDetailsURL = programDetailsURL {
             webViewHelper?.loadRequest(withURL: programDetailsURL)
         }

@@ -14,7 +14,6 @@ class DiscoverWebViewTests: XCTestCase {
     func testAppURLScheme() {
         let correctURL = URL(string: "edxapp://course_info?path_id=course/science-happiness-uc-berkeleyx-gg101x")
         let wrongURL = URL(string: "edxapps://course_info?path_id=course/science-happiness-uc-berkeleyx-gg101x")
-        
         XCTAssert(correctURL!.isValidAppURLScheme, "Valid URL Scheme is not recognised")
         XCTAssertFalse(wrongURL!.isValidAppURLScheme, "Invalid URL Scheme is not recognised")
     }
@@ -22,7 +21,7 @@ class DiscoverWebViewTests: XCTestCase {
     func testAppHost() {
         let correctURL = URL(string: "edxapp://course_info?path_id=course/science-happiness-uc-berkeleyx-gg101x")
         let wrongURL = URL(string: "edxapp://course_infos?path_id=course/science-happiness-uc-berkeleyx-gg101x")
-        let discoverWebViewController = DiscoverWebViewController(with: nil)
+        let discoverWebViewController = WebViewController(with: nil)
         XCTAssertNotNil(discoverWebViewController.appURLHostIfValid(url: correctURL!))
         XCTAssertNil(discoverWebViewController.appURLHostIfValid(url: wrongURL!))
     }

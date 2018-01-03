@@ -13,7 +13,7 @@ enum CoursesWebViewType {
     case exploreSubjects
 }
 
-class CoursesWebViewController: DiscoverWebViewController {
+class CoursesWebViewController: WebViewController {
     
     var coursesWebViewType: CoursesWebViewType?
     var courseEnrollmentConfig: CourseEnrollmentConfig {
@@ -24,10 +24,10 @@ class CoursesWebViewController: DiscoverWebViewController {
         super.viewDidLoad()
         navigationItem.title = courseEnrollmentConfig.discoveryTitle
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
-        view.backgroundColor = OEXStyles.shared().standardBackgroundColor()
+        
         if let urlToLoad =
             coursesWebViewType ?? .discoverCourses == .discoverCourses ? courseEnrollmentConfig.webview.searchURL : courseEnrollmentConfig.webview.exploreSubjectsURL {
+            webViewHelper?.webView.accessibilityIdentifier = "find-courses-webview"
             webViewHelper?.loadRequest(withURL: urlToLoad)
         }
     }
@@ -51,6 +51,17 @@ class CoursesWebViewController: DiscoverWebViewController {
     
     override var webViewSearchBaseURL: URL? {
         return courseEnrollmentConfig.webview.searchURL
+    }
+    
+    override func webViewDidFinishLoading(_ helper: WebViewHelper) {
+        // Setting webView accessibilityValue for testing
+        let script = "document.getElementsByClassName('course-card')[0].innerText"
+        helper.webView.evaluateJavaScript(script, completionHandler: {
+            (result: Any?, error: Error?) in
+            if (error == nil) {
+                helper.webView.accessibilityValue = "findCoursesLoaded"
+            }
+        })
     }
 
 }

@@ -1,5 +1,5 @@
 //
-//  DiscoverWebViewHelper.swift
+//  WebViewHelper.swift
 //  edX
 //
 //  Created by Muhammad Zeeshan Arif on 20/12/2017.
@@ -9,17 +9,17 @@
 import UIKit
 import WebKit
 
-@objc protocol DiscoverWebViewHelperDataSource: class {
+protocol WebViewHelperDelegate: class {
+    // Properties
     var webViewNativeSearchEnabled: Bool { get }
     var webViewSearchBaseURL: URL? { get }
     var webViewParentController: UIViewController { get }
+    // Methods
+    func webView(helper : WebViewHelper, shouldLoad request: URLRequest) -> Bool
+    func webViewDidFinishLoading(_ helper : WebViewHelper)
 }
 
-@objc protocol DiscoverWebViewHelperDelegate: class {
-    func webViewHelper(helper : DiscoverWebViewHelper, shouldLoadLinkWithRequest request: URLRequest) -> Bool
-}
-
-class DiscoverWebViewHelper: NSObject  {
+class WebViewHelper: NSObject  {
     
     let bottomBarHeight: CGFloat = 50.0
     fileprivate lazy var loadController: LoadStateViewController = {
@@ -33,26 +33,24 @@ class DiscoverWebViewHelper: NSObject  {
     }()
     var bottomBar: UIView?
     let config : OEXConfig?
-    weak var delegate : DiscoverWebViewHelperDelegate?
-    weak var dataSource : DiscoverWebViewHelperDataSource?
+    weak var delegate : WebViewHelperDelegate?
     fileprivate var request : URLRequest?
     
-    init(config : OEXConfig?, delegate : DiscoverWebViewHelperDelegate?, dataSource : DiscoverWebViewHelperDataSource?, bottomBar: UIView?) {
+    init(config : OEXConfig?, delegate : WebViewHelperDelegate?, bottomBar: UIView?) {
         
         self.config = config
         self.delegate = delegate
-        self.dataSource = dataSource
         self.bottomBar = bottomBar
         super.init()
         
         webView.navigationDelegate = self
         webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
         
-        if let container = dataSource?.webViewParentController {
+        if let container = delegate?.webViewParentController {
             loadController.setupInController(controller: container, contentView: webView)
             
             let webviewTop: ConstraintItem
-            if dataSource?.webViewNativeSearchEnabled ?? false {
+            if delegate?.webViewNativeSearchEnabled ?? false {
                 searchBar.delegate = self
                 container.view.addSubview(searchBar)
                 searchBar.snp_makeConstraints { make in
@@ -101,7 +99,7 @@ class DiscoverWebViewHelper: NSObject  {
         loadController.state = LoadState.failed(error: error, buttonInfo: buttonInfo)
     }
     
-    @objc static func buildQuery(baseURL: String, toolbarString: String) -> URL? {
+    static func buildQuery(baseURL: String, toolbarString: String) -> URL? {
         let items = toolbarString.components(separatedBy: " ")
         let escapedItems = items.flatMap { $0.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)  }
         let searchTerm = "search_query=" + escapedItems.joined(separator: "+")
@@ -116,11 +114,11 @@ class DiscoverWebViewHelper: NSObject  {
     
 }
 // MARK: - WKNavigationDelegate -
-extension DiscoverWebViewHelper: WKNavigationDelegate {
+extension WebViewHelper: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let request = navigationAction.request
-        let capturedLink = navigationAction.navigationType == .linkActivated && (delegate?.webViewHelper(helper: self, shouldLoadLinkWithRequest: request) ?? true)
+        let capturedLink = navigationAction.navigationType == .linkActivated && (delegate?.webView(helper: self, shouldLoad: request) ?? true)
         
         let outsideLink = (request.mainDocumentURL?.host != self.request?.url?.host)
         if let URL = request.url, outsideLink || capturedLink {
@@ -137,6 +135,7 @@ extension DiscoverWebViewHelper: WKNavigationDelegate {
         if let bar = bottomBar {
             bar.superview?.bringSubview(toFront: bar)
         }
+        delegate?.webViewDidFinishLoading(self)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -157,12 +156,12 @@ extension DiscoverWebViewHelper: WKNavigationDelegate {
     }
 }
 // MARK: - UISearchBarDelegate -
-extension DiscoverWebViewHelper: UISearchBarDelegate {
+extension WebViewHelper: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        guard let searchTerms = searchBar.text, let searchURL = dataSource?.webViewSearchBaseURL else { return }
-        if let URL = DiscoverWebViewHelper.buildQuery(baseURL: searchURL.URLString, toolbarString: searchTerms) {
+        guard let searchTerms = searchBar.text, let searchURL = delegate?.webViewSearchBaseURL else { return }
+        if let URL = WebViewHelper.buildQuery(baseURL: searchURL.URLString, toolbarString: searchTerms) {
             loadRequest(withURL: URL)
         }
     }

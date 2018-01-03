@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CourseDetailsWebViewController: DiscoverWebViewController {
+class CourseDetailsWebViewController: WebViewController {
     
     var courseDetailURL:URL?
     init(with courseDetailURL: URL, andBottomBar bar: UIView?) {
@@ -22,7 +22,6 @@ class CourseDetailsWebViewController: DiscoverWebViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewHelper = DiscoverCoursesWebViewHelper(config:OEXConfig.shared(), delegate: self, dataSource: self, bottomBar: bottomBar)
         if let courseDetailUrl = courseDetailURL {
             webViewHelper?.loadRequest(withURL: courseDetailUrl)
         }

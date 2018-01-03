@@ -1,5 +1,5 @@
 //
-//  DiscoverCatalog.swift
+//  WebViewEnums.swift
 //  edX
 //
 //  Created by Muhammad Zeeshan Arif on 21/12/2017.
