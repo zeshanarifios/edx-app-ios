@@ -89,9 +89,9 @@ extension OEXRouter {
     
     private func controllerForBlockWithID(blockID : CourseBlockID?, type : CourseBlockDisplayType, courseID : String, forMode mode: CourseOutlineMode? = .Full) -> UIViewController {
         switch type {
-            case .Outline:
-                let outlineController = CourseOutlineViewController(environment: self.environment, courseID: courseID, rootID: blockID, forMode: mode)
-                return outlineController
+        case .Outline:
+            let outlineController = CourseOutlineViewController(environment: self.environment, courseID: courseID, rootID: blockID, forMode: mode)
+            return outlineController
         case .Unit:
             return unitControllerForCourseID(courseID: courseID, blockID: blockID, initialChildID: nil, forMode: mode)
         case .HTML:
@@ -186,7 +186,7 @@ extension OEXRouter {
         let topicsController = DiscussionTopicsViewController(environment: environment, courseID: courseID)
         controller.navigationController?.pushViewController(topicsController, animated: true)
     }
-
+    
     func showDiscussionNewPostFromController(controller: UIViewController, courseID : String, selectedTopic : DiscussionTopic?) {
         let newPostController = DiscussionNewPostViewController(environment: environment, courseID: courseID, selectedTopic: selectedTopic)
         if let delegate = controller as? DiscussionNewPostViewControllerDelegate {
@@ -200,7 +200,7 @@ extension OEXRouter {
         let handoutsViewController = CourseHandoutsViewController(environment: environment, courseID: courseID)
         controller.navigationController?.pushViewController(handoutsViewController, animated: true)
     }
-
+    
     func showMySettings(controller: UIViewController? = nil) {
         let settingController = OEXMySettingsViewController(nibName: nil, bundle: nil)
         controller?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -241,7 +241,7 @@ extension OEXRouter {
         let editController = UserProfileEditViewController(profile: profile, environment: environment)
         controller.navigationController?.pushViewController(editController, animated: true)
     }
-
+    
     func showCertificate(url: NSURL, title: String?, fromController controller: UIViewController) {
         let c = CertificateViewController(environment: environment)
         c.title = title
@@ -261,7 +261,19 @@ extension OEXRouter {
     }
     
     func showCourseCatalog(fromController: UIViewController? = nil, bottomBar: UIView? = nil) {
-        let controller = discoveryViewController()
+        var controller: UIViewController
+        if environment.config.programEnrollment.isEnabled && environment.config.courseEnrollment.isEnabled {
+            controller = DiscoveryCatalogViewController(with: environment, andBottomBar: bottomBar?.copy() as? UIView)
+        }
+        else if environment.config.programEnrollment.isEnabled {
+            controller = ProgramsWebViewController(with: bottomBar?.copy() as? UIView)
+        }
+        else if environment.config.courseEnrollment.isEnabled {
+            controller = discoveryViewController(bottomBar: bottomBar)
+        }
+        else {
+            return
+        }
         if revealController != nil {
             if let fromController = fromController {
                 fromController.navigationController?.pushViewController(controller, animated: true)
@@ -269,28 +281,21 @@ extension OEXRouter {
             else {
                 showContentStack(withRootController: controller, animated: true)
             }
-            
-        } else {
+        }
+        else {
             showControllerFromStartupScreen(controller: controller)
         }
         self.environment.analytics.trackUserFindsCourses()
+        
     }
     
-    func discoveryViewController() -> UIViewController {
-        let controller: UIViewController
-        switch environment.config.courseEnrollmentConfig.type {
-        case .Webview:
-            controller = OEXFindCoursesViewController(bottomBar: nil)
-        case .Native, .None:
-            controller = CourseCatalogViewController(environment: environment)
-        }
-        
-        return controller
+    func discoveryViewController(bottomBar: UIView?) -> UIViewController {
+        return environment.config.courseEnrollment.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
     }
 
     func showExploreCourses(bottomBar: UIView?) {
-        let controller = OEXFindCoursesViewController(bottomBar: bottomBar)
-        controller.startURL = .exploreSubjects
+        let controller = CoursesWebViewController(with: bottomBar)
+        controller.coursesWebViewType = .exploreSubjects
         if revealController != nil {
             showContentStack(withRootController: controller, animated: true)
         } else {

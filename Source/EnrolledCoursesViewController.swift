@@ -21,6 +21,9 @@ class EnrolledCoursesViewController : OfflineSupportViewController, CoursesTable
     private let insetsController = ContentInsetsController()
     fileprivate let enrollmentFeed: Feed<[UserCourseEnrollment]?>
     private let userPreferencesFeed: Feed<UserPreference?>
+    private var courseOrProgramEnrollmentEnabled: Bool {
+        return environment.config.courseEnrollment.isEnabled || environment.config.programEnrollment.isEnabled
+    }
 
     init(environment: Environment) {
         self.tableController = CoursesTableViewController(environment: environment, context: .EnrollmentList)
@@ -90,7 +93,7 @@ class EnrolledCoursesViewController : OfflineSupportViewController, CoursesTable
     }
 
     private func addFindCoursesButton() {
-        if environment.config.courseEnrollmentConfig.isCourseDiscoveryEnabled() {
+        if courseOrProgramEnrollmentEnabled {
             let findcoursesButton = UIBarButtonItem(barButtonSystemItem: .search, target: nil, action: nil)
             findcoursesButton.accessibilityLabel = Strings.findCourses
             navigationItem.rightBarButtonItem = findcoursesButton
@@ -137,7 +140,7 @@ class EnrolledCoursesViewController : OfflineSupportViewController, CoursesTable
     }
     
     private func setupFooter() {
-        if environment.config.courseEnrollmentConfig.isCourseDiscoveryEnabled() {
+        if courseOrProgramEnrollmentEnabled {
             let footer = EnrolledCoursesFooterView()
             footer.findCoursesAction = {[weak self] in
                 self?.environment.router?.showCourseCatalog(fromController: self, bottomBar: nil)
@@ -152,7 +155,7 @@ class EnrolledCoursesViewController : OfflineSupportViewController, CoursesTable
     }
     
     private func enrollmentsEmptyState() {
-        if !environment.config.courseEnrollmentConfig.isCourseDiscoveryEnabled() {
+        if !environment.config.courseEnrollment.isEnabled {
             let error = NSError.oex_error(with: .unknown, message: Strings.EnrollmentList.noEnrollment)
             loadController.state = LoadState.failed(error: error, icon: Icon.UnknownError)
         }
