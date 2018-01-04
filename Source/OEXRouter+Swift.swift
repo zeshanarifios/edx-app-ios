@@ -261,19 +261,10 @@ extension OEXRouter {
     }
     
     func showCourseCatalog(fromController: UIViewController? = nil, bottomBar: UIView? = nil) {
-        var controller: UIViewController
-        if environment.config.programEnrollment.isEnabled && environment.config.courseEnrollment.isEnabled {
-            controller = DiscoveryCatalogViewController(with: environment, andBottomBar: bottomBar?.copy() as? UIView)
-        }
-        else if environment.config.programEnrollment.isEnabled {
-            controller = ProgramsWebViewController(with: bottomBar?.copy() as? UIView)
-        }
-        else if environment.config.courseEnrollment.isEnabled {
-            controller = discoveryViewController(bottomBar: bottomBar)
-        }
-        else {
+        guard let controller = discoveryViewController(bottomBar: bottomBar) else {
             return
         }
+        
         if revealController != nil {
             if let fromController = fromController {
                 fromController.navigationController?.pushViewController(controller, animated: true)
@@ -289,8 +280,18 @@ extension OEXRouter {
         
     }
     
-    func discoveryViewController(bottomBar: UIView?) -> UIViewController {
-        return environment.config.courseEnrollment.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
+    func discoveryViewController(bottomBar: UIView?) -> UIViewController? {
+        
+        if environment.config.programEnrollment.isEnabled && environment.config.courseEnrollment.isEnabled {
+            return DiscoveryCatalogViewController(with: environment, andBottomBar: bottomBar?.copy() as? UIView)
+        }
+        else if environment.config.programEnrollment.isEnabled {
+            return ProgramsWebViewController(with: bottomBar?.copy() as? UIView)
+        }
+        else if environment.config.courseEnrollment.isEnabled {
+            return environment.config.courseEnrollment.type == .webview ? CoursesWebViewController(with: bottomBar?.copy() as? UIView) : CourseCatalogViewController(environment: environment)
+        }
+        return nil
     }
 
     func showExploreCourses(bottomBar: UIView?) {

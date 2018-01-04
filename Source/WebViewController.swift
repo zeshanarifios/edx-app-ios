@@ -109,7 +109,7 @@ class WebViewController: UIViewController, WebViewHelperDelegate {
         perform(#selector(postEnrollmentSuccessNotification), with: message, afterDelay: 0.5)
     }
     
-    private func postEnrollmentSuccessNotification(message: String) {
+    @objc private func postEnrollmentSuccessNotification(message: String) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: EnrollmentShared.successNotification), object: message)
         if isModal() {
             view.window?.rootViewController?.dismiss(animated: true, completion: nil)

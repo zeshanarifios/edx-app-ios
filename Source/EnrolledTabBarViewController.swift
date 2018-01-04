@@ -17,7 +17,7 @@ private enum TabBarOptions: Int {
         case .Course:
             return Strings.courses
         case .CourseCatalog:
-            return config?.courseEnrollmentConfig.type == .Native ? Strings.findCourses : Strings.discover
+            return config?.courseEnrollment.discoveryTitle ?? Strings.discover
         case .Debug:
             return Strings.debug
         }
@@ -77,8 +77,9 @@ class EnrolledTabBarViewController: UITabBarController, UITabBarControllerDelega
                 item = TabBarItem(title: option.title(), viewController: EnrolledCoursesViewController(environment: environment), icon: Icon.Courseware, detailText: Strings.Dashboard.courseCourseDetail)
                 tabBarItems.append(item)
             case .CourseCatalog:
-                guard environment.config.courseEnrollment.isCourseDiscoveryEnabled(), let router = environment.router else { break }
-                item = TabBarItem(title: option.title(config: environment.config), viewController: router.discoveryViewController(), icon: Icon.Discovery, detailText: Strings.Dashboard.courseCourseDetail)
+                guard environment.config.courseEnrollment.isEnabled,
+                    let router = environment.router, let viewController = router.discoveryViewController(bottomBar: nil) else { break }
+                item = TabBarItem(title: option.title(config: environment.config), viewController: viewController, icon: Icon.Discovery, detailText: Strings.Dashboard.courseCourseDetail)
                 tabBarItems.append(item)
             case .Debug:
                 if environment.config.shouldShowDebug() {
