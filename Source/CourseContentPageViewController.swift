@@ -206,8 +206,14 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
 
         if let cursor = contentLoader.value {
             let item = cursor.current
+            
+            
 
             DispatchQueue.main.async { [weak self] in
+                if let parent = self?.parent as? LearningSequenceViewController {
+                    let parentBlockId = cursor.current.parent
+                    parent.list = cursor.list.filter { $0.parent == parentBlockId }
+                }
                 // only animate change if we haven't set a title yet, so the initial set happens without
                 // animation to make the push transition work right
                 let actions : () -> Void = {
@@ -279,7 +285,7 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
         }
     }
     
-    private func setPageControllers(with controllers: [UIViewController], direction:UIPageViewControllerNavigationDirection, animated:Bool, competion: ((Bool) -> Swift.Void)? = nil) {
+    func setPageControllers(with controllers: [UIViewController], direction:UIPageViewControllerNavigationDirection, animated:Bool, competion: ((Bool) -> Swift.Void)? = nil) {
         // setViewControllers is being called in async thread so user may intract with UIPageController in that duration so
         // disabling user interation while setting viewControllers of UIPageViewController
         view.isUserInteractionEnabled = false
@@ -287,6 +293,7 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
         DispatchQueue.main.async { [weak self] in
             self?.setViewControllers(controllers, direction: direction, animated: animated, completion: competion)
             self?.updateNavigationForEnteredController(controller: controllers.first)
+            competion?(true)
         }
     }
     

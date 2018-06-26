@@ -201,8 +201,8 @@ class VideoBlockViewController : UIViewController, CourseBlockViewController, St
             make.top.equalTo(videoController.view.snp.bottom)
             make.leading.equalTo(contentView)
             make.trailing.equalTo(contentView)
-            let barHeight = navigationController?.toolbar.frame.size.height ?? 0.0
-            make.bottom.equalTo(view.snp.bottom).offset(-barHeight)
+//            let barHeight = navigationController?.toolbar.frame.size.height ?? 0.0
+            make.bottom.equalTo(contentView.snp.bottom)//.offset(-barHeight)
         }
     }
     

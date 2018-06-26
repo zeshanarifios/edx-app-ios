@@ -704,6 +704,8 @@
 		B78B233F20908C3D00F8D976 /* AgreementTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78B233E20908C3D00F8D976 /* AgreementTextView.swift */; };
 		B793455D20B584F500DBFC33 /* subjects.json in Resources */ = {isa = PBXBuildFile; fileRef = B793455F20B584F500DBFC33 /* subjects.json */; };
 		B793456C20B596FC00DBFC33 /* SubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793456B20B596FC00DBFC33 /* SubjectsViewController.swift */; };
+		B7990DE920DBD542004527CE /* LearningSequenceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7990DE820DBD542004527CE /* LearningSequenceCollectionViewCell.swift */; };
+		B7990DEB20DBDBC4004527CE /* LearningSequenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7990DEA20DBDBC4004527CE /* LearningSequenceViewController.swift */; };
 		B7A1EA83209C41C400BD369A /* SnapKit+SafeAreaLayoutGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1EA82209C41C400BD369A /* SnapKit+SafeAreaLayoutGuide.swift */; };
 		B7C5DB3820B6C73700D80AD2 /* PopularSubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C5DB3720B6C73700D80AD2 /* PopularSubjectsViewController.swift */; };
 		B7C5DB3A20B75BFB00D80AD2 /* ViewAllSubjectsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C5DB3920B75BFB00D80AD2 /* ViewAllSubjectsCollectionViewCell.swift */; };
@@ -1705,6 +1707,8 @@
 		B793455E20B584F500DBFC33 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/subjects.json; sourceTree = "<group>"; };
 		B793456020B584F800DBFC33 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "es-419"; path = "es-419.lproj/subjects.json"; sourceTree = "<group>"; };
 		B793456B20B596FC00DBFC33 /* SubjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectsViewController.swift; sourceTree = "<group>"; };
+		B7990DE820DBD542004527CE /* LearningSequenceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningSequenceCollectionViewCell.swift; sourceTree = "<group>"; };
+		B7990DEA20DBDBC4004527CE /* LearningSequenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningSequenceViewController.swift; sourceTree = "<group>"; };
 		B7A1EA82209C41C400BD369A /* SnapKit+SafeAreaLayoutGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapKit+SafeAreaLayoutGuide.swift"; sourceTree = "<group>"; };
 		B7C5DB3720B6C73700D80AD2 /* PopularSubjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularSubjectsViewController.swift; sourceTree = "<group>"; };
 		B7C5DB3920B75BFB00D80AD2 /* ViewAllSubjectsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllSubjectsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -3339,6 +3343,15 @@
 			path = "Subjects JSON";
 			sourceTree = "<group>";
 		};
+		B7990DE720DBD4F5004527CE /* Learning Sequence */ = {
+			isa = PBXGroup;
+			children = (
+				B7990DE820DBD542004527CE /* LearningSequenceCollectionViewCell.swift */,
+				B7990DEA20DBDBC4004527CE /* LearningSequenceViewController.swift */,
+			);
+			path = "Learning Sequence";
+			sourceTree = "<group>";
+		};
 		B7A1EA81209C417000BD369A /* SnapKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -3415,6 +3428,7 @@
 		BE45DA86192605E7003BD39B /* Course */ = {
 			isa = PBXGroup;
 			children = (
+				B7990DE720DBD4F5004527CE /* Learning Sequence */,
 				223DD6B91F9F59C3004A21B9 /* Tab Layout Dashboard */,
 				221D31801EC08AEE001D8D71 /* Course Dates */,
 				778F17791C0D125A0099BF93 /* CoursesTableViewController.swift */,
@@ -4581,6 +4595,8 @@
 				B70BD00820B57E8C005F0D19 /* OEXLastAccessedTableViewCell.m in Sources */,
 				771273271BA36B76008BA397 /* LoggingAnalyticsTracker.swift in Sources */,
 				9E4E6C411B4BDB5C0034F7EB /* MockLastAccessedProvider.swift in Sources */,
+				B7990DE920DBD542004527CE /* LearningSequenceCollectionViewCell.swift in Sources */,
+				B7990DEB20DBDBC4004527CE /* LearningSequenceViewController.swift in Sources */,
 				9EEFFD651B300E87002A88B0 /* OEXInterface+Swift.swift in Sources */,
 				1A9A1E481B8F3BB8005AE336 /* OEXCheckBox.swift in Sources */,
 				46CECC3C1B041D270073C63A /* AdditionalTableViewCell.swift in Sources */,

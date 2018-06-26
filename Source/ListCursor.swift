@@ -11,7 +11,7 @@ import Foundation
 public class ListCursor<A> {
     
     private var index : Int
-    private let list : [A]
+    let list : [A]
     
     public init(before : [A], current : A, after : [A]) {
         self.index = before.count

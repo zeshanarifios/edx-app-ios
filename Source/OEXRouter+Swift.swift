@@ -56,8 +56,8 @@ extension OEXRouter {
         showContainerForBlockWithID(blockID: nil, type: CourseBlockDisplayType.Outline, parentID: nil, courseID : courseID, fromController: controller)
     }
     
-    func unitControllerForCourseID(courseID : String, blockID : CourseBlockID?, initialChildID : CourseBlockID?, forMode mode: CourseOutlineMode? = .full) -> CourseContentPageViewController {
-        let contentPageController = CourseContentPageViewController(environment: environment, courseID: courseID, rootID: blockID, initialChildID: initialChildID, forMode: mode ?? .full)
+    func unitControllerForCourseID(courseID : String, blockID : CourseBlockID?, initialChildID : CourseBlockID?, forMode mode: CourseOutlineMode? = .full) -> LearningSequenceViewController {
+        let contentPageController = LearningSequenceViewController(environment: environment, courseID: courseID, rootID: blockID, initialChildID: initialChildID, forMode: mode ?? .full)
         return contentPageController
     }
     
@@ -75,13 +75,13 @@ extension OEXRouter {
         case .Unknown:
             let pageController = unitControllerForCourseID(courseID: courseID, blockID: parentID, initialChildID: blockID, forMode: mode)
             if let delegate = controller as? CourseContentPageViewControllerDelegate {
-                pageController.navigationDelegate = delegate
+                pageController.contentPageViewController?.navigationDelegate = delegate
             }
             controller.navigationController?.pushViewController(pageController, animated: true)
         case .Discussion:
             let pageController = unitControllerForCourseID(courseID: courseID, blockID: parentID, initialChildID: blockID)
             if let delegate = controller as? CourseContentPageViewControllerDelegate {
-                pageController.navigationDelegate = delegate
+                pageController.contentPageViewController?.navigationDelegate = delegate
             }
             controller.navigationController?.pushViewController(pageController, animated: true)
         }
