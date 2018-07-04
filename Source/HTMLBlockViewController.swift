@@ -15,7 +15,7 @@ public class HTMLBlockViewController: UIViewController, CourseBlockViewControlle
     public let courseID : String
     public let blockID : CourseBlockID?
     
-    private let webController : AuthenticatedWebViewController
+    let webController : AuthenticatedWebViewController
     
     private let loader = BackedStream<CourseBlock>()
     private let courseQuerier : CourseOutlineQuerier

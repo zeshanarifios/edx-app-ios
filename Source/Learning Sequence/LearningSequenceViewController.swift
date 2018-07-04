@@ -29,7 +29,74 @@ class LearningSequenceViewController: UIViewController {
     var list: [CourseOutlineQuerier.GroupItem] = [] {
         didSet {
             collectionView.reloadData()
+            contentPageViewController?.view.isHidden = true
+            contentPageViewController?.initialLoadController.state = .Loaded
+            setupUnitViewController()
         }
+    }
+    
+    var componentViews: [UIView] = []
+    
+    lazy var unitController = UnitViewController()
+    func setupUnitViewController() {
+        print("Test")
+        guard let pager = contentPageViewController else { return }
+        
+        addChildViewController(unitController)
+        unitController.didMove(toParentViewController: self)
+        view.addSubview(unitController.view)
+        unitController.view.snp.makeConstraints { make in
+            make.edges.equalTo(contentPageViewController?.view ?? view)
+        }
+        
+        var previousItem: ConstraintItem  = unitController.scrollView.snp.top
+        for item in list {
+            if let controller = pager.controllerForBlock(block: item.block) {
+                unitController.addChildViewController(controller)
+                controller.didMove(toParentViewController: unitController)
+                let headerView = UIView()
+                headerView.backgroundColor = OEXStyles.shared().navigationBarColor()
+                let titleLabel = UILabel()
+                titleLabel.textColor = OEXStyles.shared().primaryBaseColor()
+                titleLabel.text = item.block.displayName
+                headerView.addSubview(titleLabel)
+                titleLabel.snp.makeConstraints { make in
+                    make.leading.equalTo(headerView).offset(8)
+                    make.top.equalTo(headerView).offset(8)
+                    make.trailing.equalTo(headerView).inset(8)
+                    make.bottom.equalTo(headerView).inset(8)
+                }
+                unitController.scrollView.addSubview(headerView)
+                unitController.scrollView.addSubview(controller.view)
+
+                componentViews.append(controller.view)
+                
+                headerView.snp.makeConstraints { make in
+                    make.top.equalTo(previousItem).offset(0)
+                    make.leading.equalTo(view)
+                    make.trailing.equalTo(view)
+                    make.height.equalTo(44)
+                    previousItem = headerView.snp.bottom
+                }
+                
+                controller.view.snp.makeConstraints { make in
+                    make.top.equalTo(previousItem).offset(0)
+                    make.leading.equalTo(view)
+                    make.trailing.equalTo(view)
+                    let height = UIScreen.main.bounds.size.height - 110
+                    make.height.equalTo(height)
+                    previousItem = controller.view.snp.bottom
+                    if let last = list.last, last.block.blockID == item.block.blockID {
+                        make.bottom.equalTo(unitController.scrollView).inset(8)
+                    }
+                }
+                
+                
+            }
+        }
+        
+        
+        
     }
     
     public init(environment : Environment, courseID : CourseBlockID, rootID : CourseBlockID?, initialChildID: CourseBlockID? = nil, forMode mode: CourseOutlineMode) {
@@ -45,11 +112,24 @@ class LearningSequenceViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = OEXStyles.shared().neutralLight()
         addSubviews()
+        NotificationCenter.default.oex_addObserver(observer: self, name: "WEBVIEW_HEIGHT_NOTIFICATION") { (notification, observer, removeable) in
+            for controller in self.unitController.childViewControllers {
+                if let htmlController = controller as? HTMLBlockViewController {
+                    htmlController.view.snp.updateConstraints() { make in
+                        print("BLOCK HEIGHT SET: \(htmlController.webController.height)")
+                        make.height.equalTo(htmlController.webController.height)
+                    }
+                }
+            }
+            
+            self.view.layoutIfNeeded()
+            
+        }
     }
     
     private func addSubviews() {
         guard let contentPageViewController = contentPageViewController else { return }
-        view.addSubview(collectionView)
+//        view.addSubview(collectionView)
         addChildViewController(contentPageViewController)
         view.addSubview(contentPageViewController.view)
         contentPageViewController.didMove(toParentViewController: self)
@@ -59,17 +139,18 @@ class LearningSequenceViewController: UIViewController {
     
     private func setConstraints() {
         guard let contentPageViewController = contentPageViewController else { return }
-        collectionView.snp.makeConstraints { make in
+        
+//        collectionView.snp.makeConstraints { make in
+//            make.leading.equalTo(safeLeading)
+//            make.trailing.equalTo(safeTrailing)
+//            make.top.equalTo(safeTop).offset(1)
+//            make.height.equalTo(50)
+//        }
+        
+        contentPageViewController.view.snp.makeConstraints { make in
             make.leading.equalTo(safeLeading)
             make.trailing.equalTo(safeTrailing)
             make.top.equalTo(safeTop).offset(1)
-            make.height.equalTo(50)
-        }
-        
-        contentPageViewController.view.snp.makeConstraints { make in
-            make.leading.equalTo(collectionView)
-            make.trailing.equalTo(collectionView)
-            make.top.equalTo(collectionView.snp.bottom)
             make.bottom.equalTo(safeBottom)
         }
     }

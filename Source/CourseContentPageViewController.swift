@@ -26,24 +26,30 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
     
     public typealias Environment = OEXAnalyticsProvider & DataManagerProvider & OEXRouterProvider
     
-    private let initialLoadController : LoadStateViewController
-    private let environment : Environment
+    let initialLoadController: LoadStateViewController
+    private let environment: Environment
     
-    private var initialChildID : CourseBlockID?
+    private var initialChildID: CourseBlockID?
     
-    public private(set) var blockID : CourseBlockID?
+    public private(set) var blockID: CourseBlockID?
     
-    public var courseID : String {
+    public var courseID: String {
         return courseQuerier.courseID
     }
     
-    private var openURLButtonItem : UIBarButtonItem?
+    private var openURLButtonItem: UIBarButtonItem?
     
-    fileprivate var contentLoader = BackedStream<ListCursor<CourseOutlineQuerier.GroupItem>>()
+    var contentLoader = BackedStream<ListCursor<CourseOutlineQuerier.GroupItem>>()
     
     private let courseQuerier : CourseOutlineQuerier
     private var courseOutlineMode: CourseOutlineMode
     weak var navigationDelegate : CourseContentPageViewControllerDelegate?
+    lazy var unitPageController = UnitViewController()
+    
+    func setupComponents() {
+        
+    }
+    
     
     ///Manages the caching of the viewControllers that have been viewed atleast once.
     ///Removes the ViewControllers from memory in case of a memory warning
@@ -87,6 +93,9 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
 
         loadIfNecessary()
     }
+    
+    
+    
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -207,8 +216,6 @@ public class CourseContentPageViewController : UIPageViewController, UIPageViewC
         if let cursor = contentLoader.value {
             let item = cursor.current
             
-            
-
             DispatchQueue.main.async { [weak self] in
                 if let parent = self?.parent as? LearningSequenceViewController {
                     let parentBlockId = cursor.current.parent

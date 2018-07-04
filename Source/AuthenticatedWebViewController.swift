@@ -89,6 +89,9 @@ public class AuthenticatedWebViewController: UIViewController, WKNavigationDeleg
         case LoadingContent
         case NeedingSession
     }
+    
+    
+    var height: CGFloat = 600
 
     public typealias Environment = OEXAnalyticsProvider & OEXConfigProvider & OEXSessionProvider
     var delegate: AuthenticatedWebViewControllerDelegate?
@@ -228,6 +231,7 @@ public class AuthenticatedWebViewController: UIViewController, WKNavigationDeleg
     
     public func loadRequest(request : NSURLRequest) {
         contentRequest = request
+        
         loadController.state = .Initial
         state = webController.initialContentState
         
@@ -288,7 +292,18 @@ public class AuthenticatedWebViewController: UIViewController, WKNavigationDeleg
         case .LoadingContent:
             //The class which will implement this protocol method will be responsible to set the loadController state as Loaded
             if delegate?.authenticatedWebViewController(authenticatedController: self, didFinishLoading: webView) == nil {
-              loadController.state = .Loaded
+                loadController.state = .Loaded
+                webView.layoutIfNeeded()
+                webView.evaluateJavaScript("document.readyState", completionHandler: { (complete, error) in
+                    if complete != nil {
+                        
+                        print("webView.scrollView.contentSize.height:: \(webView.scrollView.contentSize.height)")
+                        self.height = webView.scrollView.contentSize.height
+                        webView.scrollView.isScrollEnabled = false
+                        NotificationCenter.default.post(name: Notification.Name("WEBVIEW_HEIGHT_NOTIFICATION"), object: nil, userInfo: nil)
+                    }
+                    
+                })
             }
         case .NeedingSession:
             state = .CreatingSession
