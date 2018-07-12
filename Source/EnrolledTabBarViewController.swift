@@ -9,15 +9,17 @@
 import UIKit
 
 private enum TabBarOptions: Int {
-    case Course, CourseCatalog, Debug
-    static let options = [Course, CourseCatalog, Debug]
+    case Course, MyPrograms, CourseCatalog, Debug
+    static let options = [Course, MyPrograms, CourseCatalog, Debug]
     
     func title(config: OEXConfig? = nil) -> String {
         switch self {
         case .Course:
             return Strings.courses
+        case .MyPrograms:
+            return "My Programs" // TODO:
         case .CourseCatalog:
-            return config?.courseEnrollmentConfig.type == .Native ? Strings.findCourses : Strings.discover
+            return config?.courseEnrollment.type == .native ? Strings.findCourses : Strings.discover
         case .Debug:
             return Strings.debug
         }
@@ -85,8 +87,12 @@ class EnrolledTabBarViewController: UITabBarController, UITabBarControllerDelega
             case .Course:
                 item = TabBarItem(title: option.title(), viewController: EnrolledCoursesViewController(environment: environment), icon: Icon.Courseware, detailText: Strings.Dashboard.courseCourseDetail)
                 tabBarItems.append(item)
+            case .MyPrograms:
+                guard environment.config.programEnrollment.isEnabled, let router = environment.router else { break }
+                item = TabBarItem(title: option.title(), viewController: router.discoveryViewController(), icon: Icon.Discovery, detailText: "My Programs") // TODO::
+                
             case .CourseCatalog:
-                guard environment.config.courseEnrollmentConfig.isCourseDiscoveryEnabled(), let router = environment.router else { break }
+                guard environment.config.courseEnrollment.isEnabled, let router = environment.router else { break }
                 item = TabBarItem(title: option.title(config: environment.config), viewController: router.discoveryViewController(), icon: Icon.Discovery, detailText: Strings.Dashboard.courseCourseDetail)
                 tabBarItems.append(item)
             case .Debug:

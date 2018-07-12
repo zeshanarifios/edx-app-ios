@@ -16,7 +16,6 @@
 #import "OEXAnalytics.h"
 #import "OEXConstants.h"
 #import "OEXCourse.h"
-#import "OEXFindCoursesViewController.h"
 #import "OEXInterface.h"
 #import "OEXNetworkManager.h"
 #import "OEXNetworkConstants.h"
@@ -57,7 +56,7 @@ static NSString* const OEXCourseInfoLinkPathIDPlaceholder = @"{path_id}";
 }
 
 - (EnrollmentConfig*)enrollmentConfig {
-    return [self.environment.config courseEnrollmentConfig];
+    return [self.environment.config courseEnrollment];
 }
     
 -(NSString *) courseDiscoveryTitle {

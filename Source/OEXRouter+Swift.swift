@@ -272,10 +272,10 @@ extension OEXRouter {
     
     func discoveryViewController(bottomBar: UIView? = nil, searchQuery: String? = nil) -> UIViewController {
         let controller: UIViewController
-        switch environment.config.courseEnrollmentConfig.type {
-        case .Webview:
-            controller =  OEXFindCoursesViewController(environment: environment, bottomBar: bottomBar, searchQuery: searchQuery)
-        case .Native, .None:
+        switch environment.config.courseEnrollment.type {
+        case .webview:
+            controller = CoursesWebViewController(environment: environment, bottomBar: bottomBar?.copy() as? UIView, searchQuery: searchQuery)
+        case .native, .none:
             controller = CourseCatalogViewController(environment: environment)
         }
         

@@ -31,7 +31,6 @@
 #import "OEXCourse.h"
 #import "OEXCoursewareAccess.h"
 #import "OEXDataParser.h"
-#import "OEXFindCoursesViewController.h"
 #import "OEXFileUtility.h"
 #import "OEXHelperVideoDownload.h"
 #import "OEXHTTPStatusCodes.h"
@@ -56,7 +55,6 @@
 #import "OEXUserDetails.h"
 #import "OEXVideoEncoding.h"
 #import "OEXVideoSummary.h"
-#import "OEXCourseInfoViewController.h"
 #import "OEXVideoPathEntry.h"
 
 #import "Reachability.h"
