@@ -6,7 +6,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 project 'edX.xcodeproj'
 
 target 'edX' do
-pod 'Analytics', '~> 3.0.0'
+pod 'Analytics'
 pod 'Segment-GoogleAnalytics', '~> 1.0.0'
 pod 'Crashlytics', '~> 3.10.1'
 pod 'DateTools', '~> 1.6.1'
@@ -17,7 +17,7 @@ pod 'NewRelicAgent', '~> 4.1'
 pod 'FBSDKCoreKit', '~> 4.31.1'
 pod 'FBSDKLoginKit', '~> 4.31.1'
 pod 'Smartling.i18n', '~> 1.0'
-pod 'Firebase/Core', '= 3.11.0'
+pod 'Firebase/Core'
 pod 'Branch', '= 0.25.5'
 end
 

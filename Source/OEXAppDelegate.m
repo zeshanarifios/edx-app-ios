@@ -12,6 +12,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 #import <NewRelicAgent/NewRelic.h>
+#import <FirebaseCore/FirebaseCore.h>
 #import <Analytics/SEGAnalytics.h>
 #import <Branch/Branch.h>
 
@@ -198,8 +199,11 @@
     
     //Initialize Firebase
     if (config.firebaseConfig.analyticsEnabled) {
-        FIROptions *options = [[FIROptions alloc] initWithGoogleAppID:config.firebaseConfig.googleAppID bundleID:[[NSBundle mainBundle] bundleIdentifier] GCMSenderID:config.firebaseConfig.gcmSenderID APIKey:config.firebaseConfig.apiKey clientID:config.firebaseConfig.clientID trackingID:@"" androidClientID:@"" databaseURL:@"" storageBucket:@"" deepLinkURLScheme:@""];
+        FIROptions *options = [[FIROptions alloc] initWithGoogleAppID:config.firebaseConfig.googleAppID GCMSenderID:config.firebaseConfig.gcmSenderID];
+        [options setAPIKey:config.firebaseConfig.apiKey];
+        [options setClientID:config.firebaseConfig.clientID];
         [FIRApp configureWithOptions:options];
+        [[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:YES];
     }
 
     //NewRelic Initialization with edx key
